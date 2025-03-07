@@ -72,10 +72,10 @@ jobs:
           npm run build
 
       # 8️⃣ Build the backend (optional)
-      - name: Build backend (optional)
-        run: |
-          cd backend
-          npm run build
+      # - name: Build backend (optional)
+      #   run: |
+      #     cd backend
+      #     npm run build
 
   lint:
     runs-on: ubuntu-latest
