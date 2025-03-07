@@ -103,6 +103,17 @@ jobs:
           cd frontend
           npm run lint
 
+      - name: Fix ESLint Permissions
+        run: |
+          cd backend
+          chmod +x node_modules/.bin/eslint
+
+      - name: Clean and Install Backend Dependencies
+        run: |
+          cd backend
+          rm -rf node_modules package-lock.json
+          npm install
+
       - name: Run ESLint on backend
         run: |
           cd backend
