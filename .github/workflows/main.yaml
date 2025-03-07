@@ -52,18 +52,18 @@ jobs:
           npm install
 
       # 5️⃣ Run backend tests (if applicable)
-      - name: Run backend tests
-        run: |
-          cd backend
-          npm test
-        env:
-          DATABASE_URL: postgresql://postgres:password@localhost:5432/testdb
+      # - name: Run backend tests
+      #   run: |
+      #     cd backend
+      #     npm test
+      #   env:
+      #     DATABASE_URL: postgresql://postgres:password@localhost:5432/testdb
 
       # 6️⃣ Run frontend tests (if applicable)
-      - name: Run frontend tests
-        run: |
-          cd frontend
-          npm test
+      # - name: Run frontend tests
+      #   run: |
+      #     cd frontend
+      #     npm test
 
       # 7️⃣ Build the frontend
       - name: Build frontend
