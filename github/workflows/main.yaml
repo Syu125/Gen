@@ -1,0 +1,104 @@
+name: CI/CD for Next.js + Express.js
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: testdb
+        ports:
+          - 5432:5432
+
+    steps:
+      # 1️⃣ Checkout the code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2️⃣ Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      # 3️⃣ Install dependencies for the backend
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          npm install
+
+      # 4️⃣ Install dependencies for the frontend
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm install
+
+      # 5️⃣ Run backend tests (if applicable)
+      - name: Run backend tests
+        run: |
+          cd backend
+          npm test
+        env:
+          DATABASE_URL: postgresql://postgres:password@localhost:5432/testdb
+
+      # 6️⃣ Run frontend tests (if applicable)
+      - name: Run frontend tests
+        run: |
+          cd frontend
+          npm test
+
+      # 7️⃣ Build the frontend
+      - name: Build frontend
+        run: |
+          cd frontend
+          npm run build
+
+      # 8️⃣ Build the backend (optional)
+      - name: Build backend (optional)
+        run: |
+          cd backend
+          npm run build
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm install
+
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          npm install
+
+      - name: Run ESLint on frontend
+        run: |
+          cd frontend
+          npm run lint
+
+      - name: Run ESLint on backend
+        run: |
+          cd backend
+          npm run lint
