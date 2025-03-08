@@ -1,6 +1,8 @@
 'use client';
 import { useEffect, useState } from 'react';
 
+import Button from '../components/button/Button';
+
 import styles from './page.module.css';
 
 export default function Home() {
@@ -24,8 +26,11 @@ export default function Home() {
               <input className={styles.input} value="Email"></input>
               <input className={styles.input} value="Password"></input>
               <div className={styles.buttons}>
-                <div>Login</div>
-                <div>Create new account</div>
+                <Button className={styles.login} text="Login"></Button>
+                <Button
+                  className={styles.newAccount}
+                  text="Create new account"
+                ></Button>
               </div>
             </div>
           </div>
