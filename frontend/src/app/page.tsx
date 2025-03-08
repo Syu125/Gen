@@ -14,9 +14,29 @@ export default function Home() {
   }, []);
 
   return (
-    <main className={styles.page}>
+    <main className={`bg-custom ${styles.page}`}>
       <div className={styles.contentFrame}>
-        <div className={styles.content}></div>
+        <div className={styles.content}>
+          <div className={styles.details}>
+            <div className={`title`}>Hello! Welcome to Gen</div>
+            <div className={styles.actions}>
+              <div>Log in</div>
+              <input className={styles.input} value="Email"></input>
+              <input className={styles.input} value="Password"></input>
+              <div className={styles.buttons}>
+                <div>Login</div>
+                <div>Create new account</div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <img
+              className={styles.wallpaper}
+              src="/landing-page/leaves.png"
+            ></img>
+          </div>
+        </div>
       </div>
     </main>
   );

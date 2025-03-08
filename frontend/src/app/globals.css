@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @plugin "tailwindcss-animate";
 
@@ -117,10 +117,12 @@
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
+  .bg-custom {
+    background: linear-gradient(180deg, #98c9a3 0%, #77bfa3 100%);
   }
-  body {
-    @apply bg-background text-foreground;
+
+  .title {
+    font-size: 36px;
+    color: black;
   }
 }
