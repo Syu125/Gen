@@ -26,10 +26,15 @@ export default function Home() {
               <input className={styles.input} value="Email"></input>
               <input className={styles.input} value="Password"></input>
               <div className={styles.buttons}>
-                <Button className={styles.login} text="Login"></Button>
+                <Button
+                  className={styles.login}
+                  text="Login"
+                  path="/auth/sign-in"
+                ></Button>
                 <Button
                   className={styles.newAccount}
                   text="Create new account"
+                  path="/auth/sign-up"
                 ></Button>
               </div>
             </div>
