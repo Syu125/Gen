@@ -29,7 +29,7 @@ export default function Home() {
                 <Button
                   className={styles.login}
                   text="Login"
-                  path="/auth/sign-in"
+                  path="/dashboard"
                 ></Button>
                 <Button
                   className={styles.newAccount}
