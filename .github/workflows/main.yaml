@@ -1,5 +1,8 @@
 name: CI/CD for Next.js + Express.js
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+
 on:
   push:
     branches:
