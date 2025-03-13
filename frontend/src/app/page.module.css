@@ -1,6 +1,6 @@
 .contentFrame {
-  width: 1557px;
-  height: 821px;
+  width: 1356px;
+  height: 715px;
   border-radius: 40px;
   padding: 46px 50px 46px 50px;
   background-color: #e1eae2;
@@ -21,7 +21,7 @@
   flex-direction: column;
   justify-content: center;
   width: 516px;
-  margin-left: 90px;
+  margin-left: 50px;
   gap: 40px;
 }
 
@@ -61,7 +61,7 @@
 }
 
 .wallpaper {
-  width: 702px;
-  height: 702px;
+  width: 623px;
+  height: 623px;
   border-radius: 40px;
 }
