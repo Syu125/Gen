@@ -16,7 +16,7 @@ export default function Home() {
   // }, []);
 
   return (
-    <main className={`bg-custom ${styles.page}`}>
+    <main className={`bg-custom`}>
       <div className={styles.contentFrame}>
         <div className={styles.content}>
           <div className={styles.details}>
