@@ -31,12 +31,12 @@
 }
 
 .content {
+  width: 100%;
   display: flex;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 40px 20px;
-  gap: 60px;
-  align-items: flex-start;
+  padding: 55px 20px;
+  gap: 75px;
+  align-items:center;
+ justify-content:center;
 }
 
 .leftSection {
