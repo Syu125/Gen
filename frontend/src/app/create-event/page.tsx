@@ -37,7 +37,7 @@ export default function CreateEvent() {
   };
 
   const handleClose = () => {
-    router.push('/');
+    router.push('/dashboard');
   };
 
   const handleLogout = () => {
