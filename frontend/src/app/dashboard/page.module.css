@@ -44,78 +44,7 @@
   max-width: 500px;
 }
 
-.eventCard {
-  width: 100%;
-  height: 300px;
-  border-radius: 16px;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 24px;
-  color: white;
-}
 
-.eventCard::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="rgba(0,0,0,0.3)"/><circle cx="200" cy="150" r="50" fill="rgba(255,255,255,0.1)"/><circle cx="100" cy="100" r="30" fill="rgba(255,255,255,0.1)"/><circle cx="300" cy="200" r="40" fill="rgba(255,255,255,0.1)"/></svg>');
-  opacity: 0.6;
-  z-index: 1;
-}
-
-.eventCardContent {
-  position: relative;
-  z-index: 2;
-}
-
-.eventCode {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
-  margin-bottom: 8px;
-  opacity: 0.9;
-}
-
-.eventCodeIcon {
-  width: 16px;
-  height: 16px;
-  background-color: rgba(255, 255, 255, 0.8);
-  border-radius: 2px;
-}
-
-.eventType {
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 4px;
-  opacity: 0.8;
-}
-
-.eventTitle {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 4px;
-}
-
-.eventSubtitle {
-  font-size: 16px;
-  margin-bottom: 8px;
-  opacity: 0.9;
-}
-
-.eventDateTime {
-  font-size: 20px;
-  font-weight: 600;
-}
 
 .viewAllEvents {
   margin-top: 16px;

@@ -3,10 +3,21 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './page.module.css';
+import EventCard from '@/components/event-card/EventCard';
 
 export default function Dashboard() {
   const router = useRouter();
   const [eventCode, setEventCode] = useState('');
+
+  const featuredEvent = {
+    id: 1,
+    code: 'C9NG7H',
+    title: 'Praise & Prayer',
+    subtitle: 'Night',
+    date: 'Feb 19',
+    time: '8:00PM',
+    type: 'UPCOMING EVENT'
+  };
 
   const handleSignUp = (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,6 +41,10 @@ export default function Dashboard() {
     router.push('/all-events');
   };
 
+  const handleEventClick = (eventId: number) => {
+    router.push(`/view-event/${eventId}`);
+  };
+
   return (
     <main className={styles.page}>
       <div className={styles.header}>
@@ -41,18 +56,11 @@ export default function Dashboard() {
 
       <div className={styles.content}>
         <div className={styles.leftSection}>
-          <div className={styles.eventCard}>
-            <div className={styles.eventCardContent}>
-              <div className={styles.eventCode}>
-                <div className={styles.eventCodeIcon}></div>
-                C9NG7H
-              </div>
-              <div className={styles.eventType}>UPCOMING EVENT</div>
-              <div className={styles.eventTitle}>Praise & Prayer</div>
-              <div className={styles.eventSubtitle}>Night</div>
-              <div className={styles.eventDateTime}>Feb 19 | 8:00PM</div>
-            </div>
-          </div>
+          <EventCard
+            event={featuredEvent}
+            variant="dashboard"
+            onClick={handleEventClick}
+          />
           
           <div className={styles.viewAllEvents} onClick={handleViewAllEvents}>
             View all your events
