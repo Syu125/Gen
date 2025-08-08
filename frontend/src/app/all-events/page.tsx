@@ -3,17 +3,18 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './page.module.css';
+import EventCard from '@/components/event-card/EventCard';
 
 export default function AllEvents() {
   const router = useRouter();
 
   const events = [
-    { id: 1, code: 'C9NG7H', title: 'Praise & Prayer Night', date: 'Feb 19 | 8:00PM', className: styles.eventCard1 },
-    { id: 2, code: 'A7B2K9', title: 'Praise & Prayer Night', date: 'Feb 19 | 8:00PM', className: styles.eventCard2 },
-    { id: 3, code: 'X4M8P3', title: 'Praise & Prayer Night', date: 'Feb 19 | 8:00PM', className: styles.eventCard3 },
-    { id: 4, code: 'L5N1Q6', title: 'Praise & Prayer Night', date: 'Feb 19 | 8:00PM', className: styles.eventCard4 },
-    { id: 5, code: 'R8S2T4', title: 'Praise & Prayer Night', date: 'Feb 19 | 8:00PM', className: styles.eventCard5 },
-    { id: 6, code: 'W3U7V9', title: 'Praise & Prayer Night', date: 'Feb 19 | 8:00PM', className: styles.eventCard6 },
+    { id: 1, code: 'C9NG7H', title: 'Praise & Prayer Night', date: 'Feb 19 | 8:00PM' },
+    { id: 2, code: 'A7B2K9', title: 'Praise & Prayer Night', date: 'Feb 19 | 8:00PM' },
+    { id: 3, code: 'X4M8P3', title: 'Praise & Prayer Night', date: 'Feb 19 | 8:00PM' },
+    { id: 4, code: 'L5N1Q6', title: 'Praise & Prayer Night', date: 'Feb 19 | 8:00PM' },
+    { id: 5, code: 'R8S2T4', title: 'Praise & Prayer Night', date: 'Feb 19 | 8:00PM' },
+    { id: 6, code: 'W3U7V9', title: 'Praise & Prayer Night', date: 'Feb 19 | 8:00PM' },
   ];
 
   const handleLogout = () => {
@@ -46,21 +47,14 @@ export default function AllEvents() {
         </h1>
 
         <div className={styles.eventsGrid}>
-          {events.map((event) => (
-            <div
+          {events.map((event, index) => (
+            <EventCard
               key={event.id}
-              className={`${styles.eventCard} ${event.className}`}
-              onClick={() => handleEventClick(event.id)}
-            >
-              <div className={styles.eventCardContent}>
-                <div className={styles.eventCode}>
-                  <div className={styles.eventCodeIcon}></div>
-                  {event.code}
-                </div>
-                <div className={styles.eventTitle}>{event.title}</div>
-                <div className={styles.eventDateTime}>{event.date}</div>
-              </div>
-            </div>
+              event={event}
+              variant="grid"
+              onClick={handleEventClick}
+              className={styles[`grid${index + 1}`]}
+            />
           ))}
         </div>
 
