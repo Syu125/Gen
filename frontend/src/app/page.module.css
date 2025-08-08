@@ -1,20 +1,8 @@
-.page {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100vw;
-  height: 100vh;
-  background: linear-gradient(180deg, #98c9a3 0%, #77bfa3 100%);
-}
-
 .contentFrame {
-  width: 1557px;
-  height: 821px;
+  width: 1356px;
+  height: 715px;
   border-radius: 40px;
-  padding-top: 46px;
-  padding-right: 50px;
-  padding-bottom: 46px;
-  padding-left: 50px;
+  padding: 46px 50px 46px 50px;
   background-color: #e1eae2;
   box-shadow: 0px 20px 25px 0px #00000040;
 }
@@ -33,7 +21,7 @@
   flex-direction: column;
   justify-content: center;
   width: 516px;
-  margin-left: 90px;
+  margin-left: 50px;
   gap: 40px;
 }
 
@@ -68,12 +56,12 @@
 }
 
 .newAccount {
-  background-color: #9fd18d;
+  background-color: #9fd1bd;
   color: black;
 }
 
 .wallpaper {
-  width: 702px;
-  height: 702px;
+  width: 623px;
+  height: 623px;
   border-radius: 40px;
 }

@@ -1,0 +1,44 @@
+.contentFrame {
+  width: 516px;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
+.title {
+  font-size: 48px;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.prompt {
+  font-size: 24px;
+}
+
+.input {
+  height: 71px;
+  border-color: black;
+  border-width: 2px;
+  border-radius: 10px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+  font-size: 24px;
+}
+
+.signUpButton {
+  background-color: black;
+  color: white;
+}
+
+.createButton {
+  background-color: #e9e9e9;
+  color: black;
+}
