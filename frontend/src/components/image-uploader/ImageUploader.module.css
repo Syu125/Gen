@@ -1,0 +1,120 @@
+.uploader {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hiddenInput {
+  display: none;
+}
+
+.uploadArea {
+  width: 100%;
+  height: 400px;
+  border: 2px dashed #ddd;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: #f8f8f8;
+}
+
+.uploadArea:hover {
+  border-color: #4CAF50;
+  background-color: #f0f8f0;
+}
+
+.dragOver {
+  border-color: #4CAF50;
+  background-color: #e8f5e8;
+  transform: scale(1.02);
+}
+
+.uploadContent {
+  text-align: center;
+  color: #666;
+}
+
+.uploadIcon {
+  margin-bottom: 16px;
+  color: #999;
+}
+
+.uploadTitle {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.uploadSubtitle {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+.previewContainer {
+  width: 100%;
+  height: 400px;
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.previewImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.previewOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  padding: 20px;
+  display: flex;
+  gap: 12px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.previewContainer:hover .previewOverlay {
+  opacity: 1;
+}
+
+.changeButton,
+.removeButton {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.changeButton {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.changeButton:hover {
+  background-color: #45a049;
+}
+
+.removeButton {
+  background-color: #f44336;
+  color: white;
+}
+
+.removeButton:hover {
+  background-color: #d32f2f;
+} 
