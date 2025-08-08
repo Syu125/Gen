@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './page.module.css';
+import ImageUploader from '@/components/image-uploader/ImageUploader';
 
 export default function CreateEvent() {
   const router = useRouter();
@@ -12,6 +13,7 @@ export default function CreateEvent() {
     time: '',
     memo: ''
   });
+  const [eventImage, setEventImage] = useState<File | null>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -25,8 +27,13 @@ export default function CreateEvent() {
     e.preventDefault();
     // TODO: Implement event creation logic
     console.log('Creating event:', formData);
+    console.log('Event image:', eventImage);
     // Navigate to dashboard or event view after creation
     router.push('/dashboard');
+  };
+
+  const handleImageChange = (file: File | null) => {
+    setEventImage(file);
   };
 
   const handleClose = () => {
@@ -49,11 +56,12 @@ export default function CreateEvent() {
 
       <div className={styles.content}>
         <div className={styles.leftSection}>
-          <button className={styles.closeButton} onClick={handleClose}>
+          <div className={styles.labelHeader}>
+            <button className={styles.closeButton} onClick={handleClose}>
             ×
-          </button>
-          
-          <h1 className={styles.title}>Create your event</h1>
+            </button>
+            <h1 className={styles.title}>Create your event</h1>
+          </div>
           
           <form className={styles.form} onSubmit={handleSubmit}>
             <div className={styles.formGroup}>
@@ -114,9 +122,10 @@ export default function CreateEvent() {
         </div>
 
         <div className={styles.rightSection}>
-          <div className={styles.placeholder}>
-            Event Preview / Image Placeholder
-          </div>
+          <ImageUploader 
+            onImageChange={handleImageChange}
+            className={styles.imageUploader}
+          />
         </div>
       </div>
     </div>
