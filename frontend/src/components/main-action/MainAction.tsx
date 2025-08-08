@@ -19,7 +19,7 @@ const MainAction: React.FC = () => {
           <Button
             className={styles.createButton}
             text="Create your own event"
-            path="/dashboard"
+            path="/create-event"
           ></Button>
         </div>
       </div>
