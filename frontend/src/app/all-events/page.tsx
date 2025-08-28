@@ -42,7 +42,9 @@ export default function AllEvents() {
 
       <div className={styles.content}>
         <h1 className={styles.title}>
-          <div className={styles.homeIcon}></div>
+          <a href="/dashboard">
+            <img src="/home.svg" alt="Home" className={styles.homeIcon} />
+          </a>
           Your Events
         </h1>
 

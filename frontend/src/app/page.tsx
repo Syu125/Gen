@@ -1,4 +1,5 @@
 'use client';
+import { signIn } from 'next-auth/react';
 // import { useEffect, useState } from 'react';
 
 import Button from '../components/button/Button';
@@ -22,19 +23,23 @@ export default function Home() {
           <div className={styles.details}>
             <div className={`title`}>Hello! Welcome to Gen</div>
             <div className={styles.actions}>
-              <div>Log in</div>
-              <input className={styles.input} value="Email"></input>
-              <input className={styles.input} value="Password"></input>
+              {/* <div>Log in</div> */}
+              {/* <input className={styles.input} value="Email"></input>
+              <input className={styles.input} value="Password"></input> */}
               <div className={styles.buttons}>
                 <Button
                   className={styles.login}
-                  text="Login"
-                  path="/dashboard"
+                  text="Login with Google"
+                  onClick={() =>
+                    signIn('google', { callbackUrl: '/dashboard' })
+                  }
                 ></Button>
                 <Button
                   className={styles.newAccount}
-                  text="Create new account"
-                  path="/auth/sign-up"
+                  text="Sign up with Google"
+                  onClick={() =>
+                    signIn('google', { callbackUrl: '/dashboard' })
+                  }
                 ></Button>
               </div>
             </div>
