@@ -9,12 +9,14 @@ const handler = NextAuth({
     }),
   ],
   callbacks: {
-    async signIn({ user, account, profile }) {
-      if (account.provider === 'google') {
+    async signIn({ user, account }) {
+      if (account && account.provider === 'google') {
         try {
           // Check if user exists in the database
-          const res = await fetch(`http://localhost:5000/api/users/email/${user.email}`);
-          
+          const res = await fetch(
+            `http://localhost:5000/api/users/email/${user.email}`
+          );
+
           if (res.status === 404) {
             // User does not exist, create a new user
             const newUserRes = await fetch('http://localhost:5000/api/users', {

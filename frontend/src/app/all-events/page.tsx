@@ -4,17 +4,48 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './page.module.css';
 import EventCard from '@/components/event-card/EventCard';
+import Image from 'next/image';
 
 export default function AllEvents() {
   const router = useRouter();
 
   const events = [
-    { id: 1, code: 'C9NG7H', title: 'Praise & Prayer Night', date: 'Feb 19 | 8:00PM' },
-    { id: 2, code: 'A7B2K9', title: 'Praise & Prayer Night', date: 'Feb 19 | 8:00PM' },
-    { id: 3, code: 'X4M8P3', title: 'Praise & Prayer Night', date: 'Feb 19 | 8:00PM' },
-    { id: 4, code: 'L5N1Q6', title: 'Praise & Prayer Night', date: 'Feb 19 | 8:00PM' },
-    { id: 5, code: 'R8S2T4', title: 'Praise & Prayer Night', date: 'Feb 19 | 8:00PM' },
-    { id: 6, code: 'W3U7V9', title: 'Praise & Prayer Night', date: 'Feb 19 | 8:00PM' },
+    {
+      id: 1,
+      code: 'C9NG7H',
+      title: 'Praise & Prayer Night',
+      date: 'Feb 19 | 8:00PM',
+    },
+    {
+      id: 2,
+      code: 'A7B2K9',
+      title: 'Praise & Prayer Night',
+      date: 'Feb 19 | 8:00PM',
+    },
+    {
+      id: 3,
+      code: 'X4M8P3',
+      title: 'Praise & Prayer Night',
+      date: 'Feb 19 | 8:00PM',
+    },
+    {
+      id: 4,
+      code: 'L5N1Q6',
+      title: 'Praise & Prayer Night',
+      date: 'Feb 19 | 8:00PM',
+    },
+    {
+      id: 5,
+      code: 'R8S2T4',
+      title: 'Praise & Prayer Night',
+      date: 'Feb 19 | 8:00PM',
+    },
+    {
+      id: 6,
+      code: 'W3U7V9',
+      title: 'Praise & Prayer Night',
+      date: 'Feb 19 | 8:00PM',
+    },
   ];
 
   const handleLogout = () => {
@@ -43,7 +74,7 @@ export default function AllEvents() {
       <div className={styles.content}>
         <h1 className={styles.title}>
           <a href="/dashboard">
-            <img src="/home.svg" alt="Home" className={styles.homeIcon} />
+            <Image src="/home.svg" alt="Home" className={styles.homeIcon} />
           </a>
           Your Events
         </h1>

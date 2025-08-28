@@ -7,12 +7,17 @@ const User = {
   },
 
   async findByEmail(email) {
-    const { rows } = await db.query('SELECT * FROM users WHERE email = $1', [email]);
+    const { rows } = await db.query('SELECT * FROM users WHERE email = $1', [
+      email,
+    ]);
     return rows[0];
   },
 
   async findByGoogleId(googleId) {
-    const { rows } = await db.query('SELECT * FROM users WHERE google_id = $1', [googleId]);
+    const { rows } = await db.query(
+      'SELECT * FROM users WHERE google_id = $1',
+      [googleId]
+    );
     return rows[0];
   },
 

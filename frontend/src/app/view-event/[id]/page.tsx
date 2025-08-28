@@ -26,7 +26,7 @@ export default function ViewEvent() {
     title: 'Praise & Prayer',
     subtitle: 'Night',
     date: 'Feb 19',
-    time: '8:00PM'
+    time: '8:00PM',
   };
 
   // Mock attendees data
@@ -37,7 +37,7 @@ export default function ViewEvent() {
       pickupLocation: '-',
       pickupTime: '-',
       dropoffLocation: '-',
-      dropoffTime: '-'
+      dropoffTime: '-',
     },
     {
       id: 2,
@@ -45,7 +45,7 @@ export default function ViewEvent() {
       pickupLocation: 'Costa Verde',
       pickupTime: '-',
       dropoffLocation: 'Costa Verde',
-      dropoffTime: '-'
+      dropoffTime: '-',
     },
     {
       id: 3,
@@ -53,7 +53,7 @@ export default function ViewEvent() {
       pickupLocation: 'Warren College',
       pickupTime: '-',
       dropoffLocation: 'Warren College',
-      dropoffTime: '-'
+      dropoffTime: '-',
     },
     {
       id: 4,
@@ -61,7 +61,7 @@ export default function ViewEvent() {
       pickupLocation: 'Seventh College',
       pickupTime: '-',
       dropoffLocation: 'Seventh College',
-      dropoffTime: '-'
+      dropoffTime: '-',
     },
     {
       id: 5,
@@ -69,8 +69,8 @@ export default function ViewEvent() {
       pickupLocation: 'Seventh College',
       pickupTime: '-',
       dropoffLocation: 'Seventh College',
-      dropoffTime: '-'
-    }
+      dropoffTime: '-',
+    },
   ];
 
   const handleBack = () => {
@@ -79,7 +79,7 @@ export default function ViewEvent() {
 
   const handleLogout = () => {
     // TODO: Implement logout logic
-    router.push('/auth/sign-in');
+    router.push('/');
   };
 
   const handleExport = () => {
@@ -103,10 +103,7 @@ export default function ViewEvent() {
 
       <div className={styles.content}>
         <div className={styles.leftSection}>
-          <EventCard
-            event={event}
-            variant="dashboard"
-          />
+          <EventCard event={event} variant="dashboard" />
         </div>
 
         <div className={styles.rightSection}>
@@ -125,9 +122,13 @@ export default function ViewEvent() {
                 {attendees.map((attendee) => (
                   <tr key={attendee.id} className={styles.tableRow}>
                     <td className={styles.passengerName}>{attendee.name}</td>
-                    <td className={styles.location}>{attendee.pickupLocation}</td>
+                    <td className={styles.location}>
+                      {attendee.pickupLocation}
+                    </td>
                     <td className={styles.time}>{attendee.pickupTime}</td>
-                    <td className={styles.location}>{attendee.dropoffLocation}</td>
+                    <td className={styles.location}>
+                      {attendee.dropoffLocation}
+                    </td>
                     <td className={styles.time}>{attendee.dropoffTime}</td>
                   </tr>
                 ))}

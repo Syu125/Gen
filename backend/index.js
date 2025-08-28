@@ -4,6 +4,7 @@ const cors = require('cors');
 const db = require('./db');
 const User = require('./models/users');
 const Event = require('./models/events');
+const logger = require('./logger');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -23,7 +24,7 @@ app.get('/test-db', async (req, res) => {
     const { rows } = await db.query('SELECT NOW()');
     res.json(rows[0]);
   } catch (err) {
-    console.error(err);
+    logger.error(err);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
@@ -35,7 +36,7 @@ app.post('/api/users', async (req, res) => {
     const newUser = await User.create({ email, name, googleId });
     res.status(201).json(newUser);
   } catch (err) {
-    console.error(err);
+    logger.error(err);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
@@ -51,7 +52,7 @@ app.get('/api/users/:id', async (req, res) => {
       res.status(404).json({ error: 'User not found' });
     }
   } catch (err) {
-    console.error(err);
+    logger.error(err);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
@@ -67,7 +68,7 @@ app.get('/api/users/email/:email', async (req, res) => {
       res.status(404).json({ error: 'User not found' });
     }
   } catch (err) {
-    console.error(err);
+    logger.error(err);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
@@ -79,7 +80,7 @@ app.get('/api/users/:id/events', async (req, res) => {
     const events = await Event.findByCreator(id);
     res.json(events);
   } catch (err) {
-    console.error(err);
+    logger.error(err);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
@@ -88,10 +89,16 @@ app.get('/api/users/:id/events', async (req, res) => {
 app.post('/api/events', async (req, res) => {
   try {
     const { title, description, date, location, creatorId } = req.body;
-    const newEvent = await Event.create({ title, description, date, location, creatorId });
+    const newEvent = await Event.create({
+      title,
+      description,
+      date,
+      location,
+      creatorId,
+    });
     res.status(201).json(newEvent);
   } catch (err) {
-    console.error(err);
+    logger.error(err);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
@@ -107,11 +114,11 @@ app.get('/api/events/:id', async (req, res) => {
       res.status(404).json({ error: 'Event not found' });
     }
   } catch (err) {
-    console.error(err);
+    logger.error(err);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server running at http://localhost:${PORT}`);
+  logger.info(`🚀 Server running at http://localhost:${PORT}`);
 });
