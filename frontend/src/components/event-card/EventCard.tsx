@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './EventCard.module.css';
+import { FaCopy, FaCheck } from 'react-icons/fa';
 
 interface EventCardProps {
   event: {
@@ -22,10 +23,19 @@ const EventCard: React.FC<EventCardProps> = ({
   onClick,
   className 
 }) => {
+  const [copied, setCopied] = useState(false);
+
   const handleClick = () => {
     if (onClick) {
       onClick(event.id);
     }
+  };
+
+  const handleCopy = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent card click event
+    navigator.clipboard.writeText(event.code);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000); // Reset after 2 seconds
   };
 
   const cardClass = `${styles.eventCard} ${styles[variant]} ${className || ''}`;
@@ -34,7 +44,11 @@ const EventCard: React.FC<EventCardProps> = ({
     <div className={cardClass} onClick={handleClick}>
       <div className={styles.eventCardContent}>
         <div className={styles.eventCode}>
-          <div className={styles.eventCodeIcon}></div>
+          {copied ? (
+            <FaCheck className={`${styles.eventCodeIcon} ${styles.copied}`} />
+          ) : (
+            <FaCopy className={styles.eventCodeIcon} onClick={handleCopy} style={{ cursor: 'pointer' }} />
+          )}
           {event.code}
         </div>
         
