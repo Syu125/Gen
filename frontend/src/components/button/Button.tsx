@@ -5,19 +5,17 @@ import styles from './Button.module.css';
 type buttonProps = {
   className: string;
   text: string;
-  path: string;
+  onClick: () => void;
   iconPath?: string;
   iconLeading?: string;
   iconTrailing?: string;
 };
 
-const Button: React.FC<buttonProps> = ({ className, text, path }) => {
+const Button: React.FC<buttonProps> = ({ className, text, onClick }) => {
   return (
-    <div className={`${className} ${styles.button}`}>
-      <a href={path}>
-        <div>{text}</div>
-      </a>
-    </div>
+    <button className={`${className} ${styles.button}`} onClick={onClick}>
+      <div>{text}</div>
+    </button>
   );
 };
 

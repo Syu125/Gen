@@ -16,7 +16,7 @@ export default function Dashboard() {
     subtitle: 'Night',
     date: 'Feb 19',
     time: '8:00PM',
-    type: 'UPCOMING EVENT'
+    type: 'UPCOMING EVENT',
   };
 
   const handleSignUp = (e: React.FormEvent) => {
@@ -34,7 +34,7 @@ export default function Dashboard() {
 
   const handleLogout = () => {
     // TODO: Implement logout logic
-    router.push('/auth/sign-in');
+    router.push('/');
   };
 
   const handleViewAllEvents = () => {
@@ -61,7 +61,7 @@ export default function Dashboard() {
             variant="dashboard"
             onClick={handleEventClick}
           />
-          
+
           <div className={styles.viewAllEvents} onClick={handleViewAllEvents}>
             View all your events
           </div>
@@ -70,7 +70,7 @@ export default function Dashboard() {
         <div className={styles.rightSection}>
           <h1 className={styles.title}>Sign up for an event</h1>
           <div className={styles.prompt}>Enter the code below:</div>
-          
+
           <form onSubmit={handleSignUp}>
             <input
               type="text"
@@ -79,13 +79,13 @@ export default function Dashboard() {
               className={styles.input}
               placeholder="Enter event code"
             />
-            
+
             <div className={styles.buttons}>
               <button type="submit" className={styles.signUpButton}>
                 Sign up
               </button>
-              <button 
-                type="button" 
+              <button
+                type="button"
                 className={styles.createButton}
                 onClick={handleCreateEvent}
               >
