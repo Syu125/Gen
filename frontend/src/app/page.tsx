@@ -51,6 +51,8 @@ export default function Home() {
               className={styles.wallpaper}
               src="/landing-page/leaves.png"
               alt="Leaves"
+              width={500}
+              height={500}
             />
           </div>
         </div>
