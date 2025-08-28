@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "lint": "eslint . --ext .mjs,.jsx,.ts,.tsx",
+    "lint": "eslint . --ext .js",
+    "build": "echo \"No build step required\"",
     "format": "prettier --write ."
   },
   "keywords": [],
@@ -18,14 +19,18 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "pg": "^8.16.3"
+    "pg": "^8.16.3",
+    "winston": "^3.17.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.0",
     "@eslint/js": "^9.22.0",
-    "eslint": "^9.22.0",
+    "eslint": "^9.34.0",
     "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-prettier": "^5.2.3",
+    "eslint-plugin-react": "^7.37.5",
     "globals": "^16.0.0",
     "nodemon": "^3.1.9",
     "prettier": "^3.5.3"

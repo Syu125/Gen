@@ -7,7 +7,10 @@ const Event = {
   },
 
   async findByCreator(creatorId) {
-    const { rows } = await db.query('SELECT * FROM events WHERE creator_id = $1', [creatorId]);
+    const { rows } = await db.query(
+      'SELECT * FROM events WHERE creator_id = $1',
+      [creatorId]
+    );
     return rows;
   },
 
