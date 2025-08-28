@@ -1,6 +1,11 @@
 const db = require('../db');
 
 const User = {
+  async findById(id) {
+    const { rows } = await db.query('SELECT * FROM users WHERE id = $1', [id]);
+    return rows[0];
+  },
+
   async findByEmail(email) {
     const { rows } = await db.query('SELECT * FROM users WHERE email = $1', [email]);
     return rows[0];
