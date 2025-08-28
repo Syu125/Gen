@@ -1,5 +1,6 @@
 'use client';
 import { signIn } from 'next-auth/react';
+import Image from 'next/image';
 // import { useEffect, useState } from 'react';
 
 import Button from '../components/button/Button';
@@ -46,10 +47,11 @@ export default function Home() {
           </div>
 
           <div>
-            <img
+            <Image
               className={styles.wallpaper}
               src="/landing-page/leaves.png"
-            ></img>
+              alt="Leaves"
+            />
           </div>
         </div>
       </div>
