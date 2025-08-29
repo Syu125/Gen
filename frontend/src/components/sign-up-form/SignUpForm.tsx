@@ -18,16 +18,8 @@ export default function SignUpForm({ event }: SignUpFormProps) {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [transportationOption, setTransportationOption] = useState('');
-  const [leavingFrom, setLeavingFrom] = useState<{
-    lat: number;
-    lng: number;
-    address: string;
-  } | null>(null);
-  const [comingBackTo, setComingBackTo] = useState<{
-    lat: number;
-    lng: number;
-    address: string;
-  } | null>(null);
+  const [leavingFrom, setLeavingFrom] = useState<{ lat: number; lng: number; name: string; fullAddress: string } | null>(null);
+  const [comingBackTo, setComingBackTo] = useState<{ lat: number; lng: number; name: string; fullAddress: string } | null>(null);
   const [capacity, setCapacity] = useState(0);
   const [error, setError] = useState('');
 
@@ -104,10 +96,10 @@ export default function SignUpForm({ event }: SignUpFormProps) {
                   onClick={() => setIsLeavingFromModalOpen(true)}
                 >
                   {leavingFrom
-                    ? `Change: ${leavingFrom.address}`
+                    ? `Change: ${leavingFrom.name}`
                     : 'Select Location on Map'}
                 </button>
-                {leavingFrom && <p>Full Address: {leavingFrom.address}</p>}
+                {leavingFrom && <p>Full Address: {leavingFrom.fullAddress}</p>}
 
                 <Modal
                   isOpen={isLeavingFromModalOpen}
@@ -131,10 +123,10 @@ export default function SignUpForm({ event }: SignUpFormProps) {
                   onClick={() => setIsComingBackToModalOpen(true)}
                 >
                   {comingBackTo
-                    ? `Change: ${comingBackTo.address}`
+                    ? `Change: ${comingBackTo.name}`
                     : 'Select Location on Map'}
                 </button>
-                {comingBackTo && <p>Full Address: {comingBackTo.address}</p>}
+                {comingBackTo && <p>Full Address: {comingBackTo.fullAddress}</p>}
 
                 <Modal
                   isOpen={isComingBackToModalOpen}
