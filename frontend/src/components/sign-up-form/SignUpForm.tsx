@@ -6,6 +6,7 @@ import { Event } from '@/types';
 import EventCard from '../event-card/EventCard';
 import LocationMapSelector from '../LocationMapSelector/LocationMapSelector';
 import Modal from '../Modal/Modal'; // Added import
+import { FaSearch } from 'react-icons/fa';
 
 interface SignUpFormProps {
   event: Event;
@@ -120,10 +121,14 @@ export default function SignUpForm({ event }: SignUpFormProps) {
                   type="button"
                   className={styles.button}
                   onClick={() => setIsLeavingFromModalOpen(true)}
+                  style={{ color: 'grey', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
                 >
-                  {leavingFrom
-                    ? `${leavingFrom.name}`
-                    : 'Select Location on Map'}
+                  <span style={{ marginRight: '8px' }}> {/* Added margin-right */}
+                    {leavingFrom
+                      ? `${leavingFrom.name}`
+                      : 'Select Location on Map'}
+                  </span>
+                  <FaSearch style={{ color: 'grey' }} />
                 </button>
                 {leavingFrom && <p style={{ color: 'grey' }}>Address: {leavingFrom.fullAddress}</p>}
 
@@ -148,10 +153,14 @@ export default function SignUpForm({ event }: SignUpFormProps) {
                   type="button"
                   className={styles.button}
                   onClick={() => setIsComingBackToModalOpen(true)}
+                  style={{ color: 'grey', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
                 >
-                  {comingBackTo
-                    ? `${comingBackTo.name}`
-                    : 'Select Location on Map'}
+                  <span style={{ marginRight: '8px' }}> {/* Added margin-right */}
+                    {comingBackTo
+                      ? `${comingBackTo.name}`
+                      : 'Select Location on Map'}
+                  </span>
+                  <FaSearch style={{ color: 'grey' }} />
                 </button>
                 {comingBackTo && <p style={{ color: 'grey' }}>Address: {comingBackTo.fullAddress}</p>}
 
@@ -190,10 +199,14 @@ export default function SignUpForm({ event }: SignUpFormProps) {
                   type="button"
                   className={styles.button}
                   onClick={() => setIsPickupAtModalOpen(true)}
+                  style={{ color: 'grey', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
                 >
-                  {pickupAt
-                    ? `${pickupAt.name}`
-                    : 'Select Pickup Location on Map'}
+                  <span style={{ marginRight: '8px' }}> {/* Added margin-right */}
+                    {pickupAt
+                      ? `${pickupAt.name}`
+                      : 'Select Pickup Location on Map'}
+                  </span>
+                  <FaSearch style={{ color: 'grey' }} />
                 </button>
                 {pickupAt && <p style={{ color: 'grey' }}>Full Address: {pickupAt.fullAddress}</p>}
 
@@ -218,10 +231,14 @@ export default function SignUpForm({ event }: SignUpFormProps) {
                   type="button"
                   className={styles.button}
                   onClick={() => setIsDropoffAtModalOpen(true)}
+                  style={{ color: 'grey', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
                 >
-                  {dropoffAt
-                    ? `${dropoffAt.name}`
-                    : 'Select Dropoff Location on Map'}
+                  <span style={{ marginRight: '8px' }}> {/* Added margin-right */}
+                    {dropoffAt
+                      ? `${dropoffAt.name}`
+                      : 'Select Dropoff Location on Map'}
+                  </span>
+                  <FaSearch style={{ color: 'grey' }} />
                 </button>
                 {dropoffAt && <p style={{ color: 'grey' }}>Full Address: {dropoffAt.fullAddress}</p>}
 
