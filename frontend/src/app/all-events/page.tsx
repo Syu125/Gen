@@ -80,9 +80,11 @@ export default function AllEvents() {
         </div>
 
         <div className={styles.loadMore}>
-          <button className={styles.loadMoreButton} onClick={handleLoadMore}>
-            Load More Events
-          </button>
+          {userEvents.length > 6 && (
+            <p className={styles.showMoreText} onClick={handleLoadMore}>
+              Show more events
+            </p>
+          )}
         </div>
       </div>
     </div>

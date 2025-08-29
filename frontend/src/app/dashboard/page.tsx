@@ -12,10 +12,12 @@ export default function Dashboard() {
   const [eventCode, setEventCode] = useState('');
   const [userEvents, setUserEvents] = useState([]);
   const [mostRecentUpcomingEvent, setMostRecentUpcomingEvent] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchUserEvents = async () => {
       if (session?.user?.id) {
+        setIsLoading(true); // Set loading to true before fetching
         try {
           const res = await fetch(`http://localhost:5000/api/users/${session.user.id}/events`);
           if (res.ok) {
@@ -36,12 +38,18 @@ export default function Dashboard() {
           }
         } catch (error) {
           console.error('Error fetching user events:', error);
+        } finally {
+          setIsLoading(false); // Set loading to false after fetching
         }
       }
     };
 
     fetchUserEvents();
   }, [session, router.pathname]);
+
+  if (isLoading) {
+    return <p>Loading...</p>; // Or a more sophisticated loading spinner
+  }
 
   const handleSignUp = (e: React.FormEvent) => {
     e.preventDefault();
