@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styles from './ImageUploader.module.css';
 import Image from 'next/image';
 
@@ -15,13 +15,19 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
   const [isDragOver, setIsDragOver] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  useEffect(() => {
+    // Cleanup function to revoke the object URL when the component unmounts or previewUrl changes
+    return () => {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
+
   const handleFileSelect = (file: File) => {
     if (file && file.type.startsWith('image/')) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setPreviewUrl(e.target?.result as string);
-      };
-      reader.readAsDataURL(file);
+      const objectUrl = URL.createObjectURL(file);
+      setPreviewUrl(objectUrl);
       onImageChange(file);
     }
   };
@@ -81,6 +87,8 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
             src={previewUrl}
             alt="Event preview"
             className={styles.previewImage}
+            width={500} // Provide a fixed width
+            height={300} // Provide a fixed height
           />
           <div className={styles.previewOverlay}>
             <button

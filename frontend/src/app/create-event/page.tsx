@@ -2,11 +2,14 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import styles from './page.module.css';
 import ImageUploader from '@/components/image-uploader/ImageUploader';
+import { Event } from '@/types';
 
 export default function CreateEvent() {
   const router = useRouter();
+  const { data: session } = useSession();
   const [formData, setFormData] = useState({
     eventName: '',
     date: '',
@@ -23,13 +26,60 @@ export default function CreateEvent() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement event creation logic
-    console.log('Creating event:', formData);
-    console.log('Event image:', eventImage);
-    // Navigate to dashboard or event view after creation
-    router.push('/dashboard');
+    if (!session?.user?.id) {
+      console.error('User not logged in');
+      return;
+    }
+
+    try {
+      let imageUrl = '';
+      if (eventImage) {
+        const imageFormData = new FormData();
+        imageFormData.append('image', eventImage);
+
+        const uploadRes = await fetch('http://localhost:5000/api/upload-image', {
+          method: 'POST',
+          body: imageFormData,
+        });
+
+        if (uploadRes.ok) {
+          const data = await uploadRes.json();
+          imageUrl = data.imageUrl;
+        } else {
+          console.error('Failed to upload image');
+          // Optionally, proceed without image or show an error to the user
+        }
+      }
+
+      const eventDateTime = new Date(`${formData.date}T${formData.time}`);
+
+      const res = await fetch('http://localhost:5000/api/events', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: formData.eventName,
+          description: formData.memo,
+          date: eventDateTime.toISOString(),
+          location: '', // You might want to add a location field to the form
+          imageUrl: imageUrl, // Include the image URL
+          creatorId: session.user.id,
+        }),
+      });
+
+      if (res.ok) {
+        const newEvent: Event = await res.json();
+        console.log('Event created:', newEvent);
+        router.push('/dashboard');
+      } else {
+        console.error('Failed to create event');
+      }
+    } catch (error) {
+      console.error('Error creating event:', error);
+    }
   };
 
   const handleImageChange = (file: File | null) => {
