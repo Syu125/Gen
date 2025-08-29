@@ -33,6 +33,8 @@ export default function CreateEvent() {
     }
 
     try {
+      const eventDateTime = new Date(`${formData.date}T${formData.time}`);
+
       const res = await fetch('http://localhost:5000/api/events', {
         method: 'POST',
         headers: {
@@ -41,7 +43,7 @@ export default function CreateEvent() {
         body: JSON.stringify({
           title: formData.eventName,
           description: formData.memo,
-          date: `${formData.date}T${formData.time}:00Z`,
+          date: eventDateTime.toISOString(),
           location: '', // You might want to add a location field to the form
           creatorId: session.user.id,
         }),

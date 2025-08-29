@@ -41,7 +41,7 @@ export default function Dashboard() {
     };
 
     fetchUserEvents();
-  }, [session]);
+  }, [session, router.pathname]);
 
   const handleSignUp = (e: React.FormEvent) => {
     e.preventDefault();
@@ -79,21 +79,23 @@ export default function Dashboard() {
       </div>
 
       <div className={`${styles.content} ${userEvents.length === 0 ? styles.contentCentered : ''}`}>
-        <div className={styles.leftSection}>
-          {mostRecentUpcomingEvent ? (
-            <EventCard
-              event={mostRecentUpcomingEvent}
-              variant="dashboard"
-              onClick={handleEventClick}
-            />
-          ) : (
-            <p>No upcoming events.</p>
-          )}
+        {userEvents.length > 0 && (
+          <div className={styles.leftSection}>
+            {mostRecentUpcomingEvent ? (
+              <EventCard
+                event={mostRecentUpcomingEvent}
+                variant="dashboard"
+                onClick={handleEventClick}
+              />
+            ) : (
+              <p>No upcoming events.</p>
+            )}
 
-          <div className={styles.viewAllEvents} onClick={handleViewAllEvents}>
-            View all your events
+            <div className={styles.viewAllEvents} onClick={handleViewAllEvents}>
+              View all your events
+            </div>
           </div>
-        </div>
+        )}
 
         <div className={`${styles.rightSection} ${userEvents.length === 0 ? styles.rightSectionCentered : ''}`}>
           <h1 className={styles.title}>Sign up for an event</h1>
