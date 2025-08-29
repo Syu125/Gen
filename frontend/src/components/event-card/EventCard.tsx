@@ -2,18 +2,10 @@ import React, { useState } from 'react';
 import styles from './EventCard.module.css';
 import { FaCopy, FaCheck } from 'react-icons/fa';
 import { format } from 'date-fns';
+import { Event } from '@/types';
 
 interface EventCardProps {
-  event: {
-    id: number;
-    code: string;
-    title: string;
-    subtitle?: string;
-    date: string;
-    time?: string;
-    type?: string;
-    image_url?: string; // Add image_url to the interface
-  };
+  event: Event;
   variant?: 'dashboard' | 'grid';
   onClick?: (eventId: number) => void;
   className?: string;

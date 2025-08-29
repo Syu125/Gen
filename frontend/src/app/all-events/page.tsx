@@ -6,18 +6,7 @@ import { useSession } from 'next-auth/react';
 import styles from './page.module.css';
 import EventCard from '@/components/event-card/EventCard';
 import Image from 'next/image';
-
-type Event = {
-  id: number;
-  code: string;
-  title: string;
-  date: string;
-  subtitle?: string;
-  time?: string;
-  type?: string;
-  image_url?: string;
-  [key: string]: any;
-};
+import { Event } from '@/types';
 
 export default function AllEvents() {
   const router = useRouter();
@@ -32,7 +21,7 @@ export default function AllEvents() {
             `http://localhost:5000/api/users/${session.user.id}/events`
           );
           if (res.ok) {
-            const events = await res.json();
+            const events: Event[] = await res.json();
             setUserEvents(events);
           } else {
             console.error('Failed to fetch user events');

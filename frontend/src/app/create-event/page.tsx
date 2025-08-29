@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import styles from './page.module.css';
 import ImageUploader from '@/components/image-uploader/ImageUploader';
+import { Event } from '@/types';
 
 export default function CreateEvent() {
   const router = useRouter();
@@ -70,7 +71,7 @@ export default function CreateEvent() {
       });
 
       if (res.ok) {
-        const newEvent = await res.json();
+        const newEvent: Event = await res.json();
         console.log('Event created:', newEvent);
         router.push('/dashboard');
       } else {

@@ -4,14 +4,16 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import styles from './page.module.css';
-import EventCard from '@/components/event-card/EventCard'; // Added comment to force re-compilation
+import EventCard from '@/components/event-card/EventCard';
+import { Event } from '@/types';
 
 export default function Dashboard() {
   const router = useRouter();
   const { data: session } = useSession();
   const [eventCode, setEventCode] = useState('');
-  const [userEvents, setUserEvents] = useState([]);
-  const [mostRecentUpcomingEvent, setMostRecentUpcomingEvent] = useState(null);
+  const [userEvents, setUserEvents] = useState<Event[]>([]);
+  const [mostRecentUpcomingEvent, setMostRecentUpcomingEvent] =
+    useState<Event | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [eventCodeError, setEventCodeError] = useState('');
 
@@ -24,17 +26,17 @@ export default function Dashboard() {
             `http://localhost:5000/api/users/${session.user.id}/events`
           );
           if (res.ok) {
-            const events = await res.json();
+            const events: Event[] = await res.json();
             setUserEvents(events);
 
             // Filter for upcoming events and find the most recent one
             const now = new Date();
             const upcomingEvents = events.filter(
-              (event) => new Date(event.date) > now
+              (event: Event) => new Date(event.date) > now
             );
             if (upcomingEvents.length > 0) {
               const sortedEvents = upcomingEvents.sort(
-                (a, b) =>
+                (a: Event, b: Event) =>
                   new Date(a.date).getTime() - new Date(b.date).getTime()
               );
               setMostRecentUpcomingEvent(sortedEvents[0]);
@@ -53,47 +55,7 @@ export default function Dashboard() {
     };
 
     fetchUserEvents();
-  }, [session, router.pathname]);
-
-  useEffect(() => {
-    const fetchUserEvents = async () => {
-      if (session?.user?.id) {
-        setIsLoading(true); // Set loading to true before fetching
-        try {
-          const res = await fetch(
-            `http://localhost:5000/api/users/${session.user.id}/events`
-          );
-          if (res.ok) {
-            const events = await res.json();
-            setUserEvents(events);
-
-            // Filter for upcoming events and find the most recent one
-            const now = new Date();
-            const upcomingEvents = events.filter(
-              (event) => new Date(event.date) > now
-            );
-            if (upcomingEvents.length > 0) {
-              const sortedEvents = upcomingEvents.sort(
-                (a, b) =>
-                  new Date(a.date).getTime() - new Date(b.date).getTime()
-              );
-              setMostRecentUpcomingEvent(sortedEvents[0]);
-            } else {
-              setMostRecentUpcomingEvent(null); // Set to null if no upcoming events
-            }
-          } else {
-            console.error('Failed to fetch user events');
-          }
-        } catch (error) {
-          console.error('Error fetching user events:', error);
-        } finally {
-          setIsLoading(false); // Set loading to false after fetching
-        }
-      }
-    };
-
-    fetchUserEvents();
-  }, [session, router.pathname]);
+  }, [session]);
 
   if (isLoading) {
     return <p>Loading...</p>; // Or a more sophisticated loading spinner

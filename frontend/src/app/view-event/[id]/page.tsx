@@ -27,6 +27,9 @@ export default function ViewEvent() {
     subtitle: 'Night',
     date: 'Feb 19',
     time: '8:00PM',
+    description: 'A night of praise and prayer.',
+    location: 'Main Hall',
+    creator_id: '1',
   };
 
   // Mock attendees data

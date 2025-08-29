@@ -1,12 +1,11 @@
-'use client';
-
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { Event } from '@/types';
 
 export default function SignUpEvent() {
   const searchParams = useSearchParams();
   const eventCode = searchParams.get('code');
-  const [event, setEvent] = useState(null);
+  const [event, setEvent] = useState<Event | null>(null);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
@@ -16,7 +15,7 @@ export default function SignUpEvent() {
         try {
           const res = await fetch(`http://localhost:5000/api/events/code/${eventCode}`);
           if (res.ok) {
-            const eventData = await res.json();
+            const eventData: Event = await res.json();
             setEvent(eventData);
           } else if (res.status === 404) {
             setError('Event code is invalid');
