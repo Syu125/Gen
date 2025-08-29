@@ -15,7 +15,7 @@ const EventCard: React.FC<EventCardProps> = ({
   event,
   variant = 'grid',
   onClick,
-  className
+  className,
 }) => {
   const [copied, setCopied] = useState(false);
 
@@ -40,35 +40,38 @@ const EventCard: React.FC<EventCardProps> = ({
     <div className={cardClass} onClick={handleClick}>
       <div className={styles.eventCardContent}>
         {event.image_url && (
-          <img src={`http://localhost:5000${event.image_url}`} alt="Event Image" className={styles.eventImage} />
+          <img
+            src={`http://localhost:5000${event.image_url}`}
+            alt="Event Image"
+            className={styles.eventImage}
+          />
         )}
         <div className={styles.overlay}></div>
         <div className={styles.eventCode}>
           {copied ? (
             <FaCheck className={`${styles.eventCodeIcon} ${styles.copied}`} />
           ) : (
-            <FaCopy className={styles.eventCodeIcon} onClick={handleCopy} style={{ cursor: 'pointer' }} />
+            <FaCopy
+              className={styles.eventCodeIcon}
+              onClick={handleCopy}
+              style={{ cursor: 'pointer' }}
+            />
           )}
           {event.code}
         </div>
-        
-        {event.type && (
-          <div className={styles.eventType}>{event.type}</div>
-        )}
-        
+
+        {event.type && <div className={styles.eventType}>{event.type}</div>}
+
         <div className={styles.eventTitle}>{event.title}</div>
-        
+
         {event.subtitle && (
           <div className={styles.eventSubtitle}>{event.subtitle}</div>
         )}
-        
-        <div className={styles.eventDateTime}>
-          {formattedDateTime}
-        </div>
+
+        <div className={styles.eventDateTime}>{formattedDateTime}</div>
       </div>
     </div>
   );
 };
 
 export default EventCard;
- 

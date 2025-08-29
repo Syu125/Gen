@@ -17,7 +17,10 @@ const storage = multer.diskStorage({
     cb(null, 'uploads/'); // Store uploaded files in the 'uploads' directory
   },
   filename: (req, file, cb) => {
-    cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`);
+    cb(
+      null,
+      `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`
+    );
   },
 });
 
@@ -103,7 +106,8 @@ app.get('/api/users/:id/events', async (req, res) => {
 // Create a new event
 app.post('/api/events', async (req, res) => {
   try {
-    const { title, description, date, location, imageUrl, creatorId } = req.body;
+    const { title, description, date, location, imageUrl, creatorId } =
+      req.body;
     const newEvent = await Event.create({
       title,
       description,

@@ -1,3 +1,4 @@
+'use client';
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Event } from '@/types';
@@ -13,7 +14,9 @@ export default function SignUpEvent() {
     const fetchEvent = async () => {
       if (eventCode) {
         try {
-          const res = await fetch(`http://localhost:5000/api/events/code/${eventCode}`);
+          const res = await fetch(
+            `http://localhost:5000/api/events/code/${eventCode}`
+          );
           if (res.ok) {
             const eventData: Event = await res.json();
             setEvent(eventData);

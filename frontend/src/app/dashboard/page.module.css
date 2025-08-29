@@ -1,5 +1,5 @@
 .page {
-  min-height: 100vh;
+  min-height: relative;
   background-color: white;
   position: relative;
 }
@@ -25,7 +25,7 @@
 
 .greenLine {
   height: 2px;
-  background-color: #4CAF50;
+  background-color: #4caf50;
   width: 100%;
   margin-top: 60px;
 }
@@ -35,8 +35,8 @@
   display: flex;
   padding: 55px 20px;
   gap: 75px;
-  align-items:center;
- justify-content:center;
+  align-items: center;
+  justify-content: center;
 }
 
 .contentCentered {
@@ -110,7 +110,7 @@
 
 .input:focus {
   outline: none;
-  border-color: #4CAF50;
+  border-color: #4caf50;
 }
 
 .buttons {
