@@ -25,7 +25,7 @@
 
 .greenLine {
   height: 2px;
-  background-color: #4CAF50;
+  background-color: #4caf50;
   width: 100%;
   margin-top: 60px;
 }
@@ -71,6 +71,12 @@
   color: #333;
 }
 
+.subtitle {
+  font-size: 20px;
+  color: #333;
+  font-weight: bold;
+}
+
 .form {
   display: flex;
   flex-direction: column;
@@ -90,7 +96,9 @@
   padding: 12px 16px;
   font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.2s, border-color 0.2s;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s;
   width: fit-content;
 }
 
@@ -99,7 +107,6 @@
   border-color: #000;
   color: #fff;
 }
-
 
 .formGroup {
   display: flex;
@@ -124,7 +131,7 @@
 
 .input:focus {
   outline: none;
-  border-color: #4CAF50;
+  border-color: #4caf50;
 }
 
 .dateTimeGroup {

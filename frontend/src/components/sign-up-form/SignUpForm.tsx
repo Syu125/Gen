@@ -18,13 +18,37 @@ export default function SignUpForm({ event }: SignUpFormProps) {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [transportationOption, setTransportationOption] = useState('');
-  const [leavingFrom, setLeavingFrom] = useState<{ lat: number; lng: number; name: string; fullAddress: string } | null>(null);
-  const [comingBackTo, setComingBackTo] = useState<{ lat: number; lng: number; name: string; fullAddress: string } | null>(null);
+  const [leavingFrom, setLeavingFrom] = useState<{
+    lat: number;
+    lng: number;
+    name: string;
+    fullAddress: string;
+  } | null>(null);
+  const [comingBackTo, setComingBackTo] = useState<{
+    lat: number;
+    lng: number;
+    name: string;
+    fullAddress: string;
+  } | null>(null);
+  const [pickupAt, setPickupAt] = useState<{
+    lat: number;
+    lng: number;
+    name: string;
+    fullAddress: string;
+  } | null>(null); // New state
+  const [dropoffAt, setDropoffAt] = useState<{
+    lat: number;
+    lng: number;
+    name: string;
+    fullAddress: string;
+  } | null>(null); // New state
   const [capacity, setCapacity] = useState(0);
   const [error, setError] = useState('');
 
-  const [isLeavingFromModalOpen, setIsLeavingFromModalOpen] = useState(false); // New state
-  const [isComingBackToModalOpen, setIsComingBackToModalOpen] = useState(false); // New state
+  const [isLeavingFromModalOpen, setIsLeavingFromModalOpen] = useState(false);
+  const [isComingBackToModalOpen, setIsComingBackToModalOpen] = useState(false);
+  const [isPickupAtModalOpen, setIsPickupAtModalOpen] = useState(false); // New state
+  const [isDropoffAtModalOpen, setIsDropoffAtModalOpen] = useState(false); // New state
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,6 +64,8 @@ export default function SignUpForm({ event }: SignUpFormProps) {
       transportationOption,
       leavingFrom,
       comingBackTo,
+      pickupAt, // Added to console.log
+      dropoffAt, // Added to console.log
       capacity,
     });
   };
@@ -87,7 +113,7 @@ export default function SignUpForm({ event }: SignUpFormProps) {
 
           {transportationOption === 'driving' && (
             <div className={styles.formGroup}>
-              <h2 className={styles.title}>Driver Confirmation</h2>
+              <h2 className={styles.subtitle}>Driver Confirmation</h2>
               <div className={styles.formGroup}>
                 <label className={styles.label}>Leaving From</label>
                 <button
@@ -126,7 +152,9 @@ export default function SignUpForm({ event }: SignUpFormProps) {
                     ? `Change: ${comingBackTo.name}`
                     : 'Select Location on Map'}
                 </button>
-                {comingBackTo && <p>Full Address: {comingBackTo.fullAddress}</p>}
+                {comingBackTo && (
+                  <p>Full Address: {comingBackTo.fullAddress}</p>
+                )}
 
                 <Modal
                   isOpen={isComingBackToModalOpen}
@@ -154,9 +182,77 @@ export default function SignUpForm({ event }: SignUpFormProps) {
               </div>
             </div>
           )}
+          {transportationOption === 'needs_ride' && ( // New block
+            <div className={styles.formGroup}>
+              <h2 className={styles.subtitle}>Passenger Details</h2>
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Pickup At</label>
+                <button
+                  type="button"
+                  className={styles.button}
+                  onClick={() => setIsPickupAtModalOpen(true)}
+                >
+                  {pickupAt
+                    ? `Change: ${pickupAt.name}`
+                    : 'Select Pickup Location on Map'}
+                </button>
+                {pickupAt && <p>Full Address: {pickupAt.fullAddress}</p>}
+
+                <Modal
+                  isOpen={isPickupAtModalOpen}
+                  onClose={() => setIsPickupAtModalOpen(false)}
+                  title="Select Pickup Location"
+                >
+                  <LocationMapSelector
+                    onSelectLocation={(loc) => {
+                      setPickupAt(loc);
+                      setIsPickupAtModalOpen(false);
+                    }}
+                    initialLocation={pickupAt || undefined}
+                  />
+                </Modal>
+              </div>
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Dropoff At</label>
+                <button
+                  type="button"
+                  className={styles.button}
+                  onClick={() => setIsDropoffAtModalOpen(true)}
+                >
+                  {dropoffAt
+                    ? `Change: ${dropoffAt.name}`
+                    : 'Select Dropoff Location on Map'}
+                </button>
+                {dropoffAt && <p>Full Address: {dropoffAt.fullAddress}</p>}
+
+                <Modal
+                  isOpen={isDropoffAtModalOpen}
+                  onClose={() => setIsDropoffAtModalOpen(false)}
+                  title="Select Dropoff Location"
+                >
+                  <LocationMapSelector
+                    onSelectLocation={(loc) => {
+                      setDropoffAt(loc);
+                      setIsDropoffAtModalOpen(false);
+                    }}
+                    initialLocation={dropoffAt || undefined}
+                  />
+                </Modal>
+              </div>
+            </div>
+          )}
+          {transportationOption === 'on_my_own' && (
+            <div className={styles.formGroup}>
+              <h2 className={styles.subtitle}>Attendee Details</h2>
+              <p>
+                You've chosen to get to the event on your own. We look forward
+                to seeing you there!
+              </p>
+            </div>
+          )}
           {error && <p style={{ color: 'red' }}>{error}</p>}
           {transportationOption && (
-            <button type="submit" className={styles.createButton}>
+            <button type="submit" className={styles.button}>
               Sign Up
             </button>
           )}
