@@ -4,5 +4,5 @@ CREATE TABLE events (
   description TEXT,
   date TIMESTAMP WITH TIME ZONE,
   location VARCHAR(255),
-  creator_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE
+  creator_id VARCHAR(255) NOT NULL REFERENCES users(id) ON DELETE CASCADE
 );

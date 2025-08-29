@@ -23,8 +23,8 @@ const User = {
 
   async create({ email, name, googleId }) {
     const { rows } = await db.query(
-      'INSERT INTO users (email, name, google_id) VALUES ($1, $2, $3) RETURNING *',
-      [email, name, googleId]
+      'INSERT INTO users (id, email, name, google_id) VALUES ($1, $2, $3, $4) RETURNING *',
+      [googleId, email, name, googleId]
     );
     return rows[0];
   },

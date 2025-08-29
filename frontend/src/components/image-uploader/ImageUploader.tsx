@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 import styles from './ImageUploader.module.css';
-import Image from 'next/image';
 
 interface ImageUploaderProps {
   onImageChange: (file: File | null) => void;
@@ -77,7 +76,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
 
       {previewUrl ? (
         <div className={styles.previewContainer}>
-          <Image
+          <img
             src={previewUrl}
             alt="Event preview"
             className={styles.previewImage}
