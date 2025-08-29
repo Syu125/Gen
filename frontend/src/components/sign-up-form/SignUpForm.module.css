@@ -44,6 +44,7 @@
   flex: 1;
   max-width: 500px;
   gap: 50px;
+  min-height: 700px; /* Added to prevent shifting of EventCard */
 }
 
 .labelHeader {

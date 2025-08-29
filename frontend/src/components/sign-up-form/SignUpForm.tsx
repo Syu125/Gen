@@ -122,10 +122,10 @@ export default function SignUpForm({ event }: SignUpFormProps) {
                   onClick={() => setIsLeavingFromModalOpen(true)}
                 >
                   {leavingFrom
-                    ? `Change: ${leavingFrom.name}`
+                    ? `${leavingFrom.name}`
                     : 'Select Location on Map'}
                 </button>
-                {leavingFrom && <p>Full Address: {leavingFrom.fullAddress}</p>}
+                {leavingFrom && <p style={{ color: 'grey' }}>Address: {leavingFrom.fullAddress}</p>}
 
                 <Modal
                   isOpen={isLeavingFromModalOpen}
@@ -135,6 +135,7 @@ export default function SignUpForm({ event }: SignUpFormProps) {
                   <LocationMapSelector
                     onSelectLocation={(loc) => {
                       setLeavingFrom(loc);
+                      setComingBackTo(loc); // Automatically populate Coming Back To
                       setIsLeavingFromModalOpen(false); // Close modal after selection
                     }}
                     initialLocation={leavingFrom || undefined}
@@ -149,12 +150,10 @@ export default function SignUpForm({ event }: SignUpFormProps) {
                   onClick={() => setIsComingBackToModalOpen(true)}
                 >
                   {comingBackTo
-                    ? `Change: ${comingBackTo.name}`
+                    ? `${comingBackTo.name}`
                     : 'Select Location on Map'}
                 </button>
-                {comingBackTo && (
-                  <p>Full Address: {comingBackTo.fullAddress}</p>
-                )}
+                {comingBackTo && <p style={{ color: 'grey' }}>Address: {comingBackTo.fullAddress}</p>}
 
                 <Modal
                   isOpen={isComingBackToModalOpen}
@@ -193,10 +192,10 @@ export default function SignUpForm({ event }: SignUpFormProps) {
                   onClick={() => setIsPickupAtModalOpen(true)}
                 >
                   {pickupAt
-                    ? `Change: ${pickupAt.name}`
+                    ? `${pickupAt.name}`
                     : 'Select Pickup Location on Map'}
                 </button>
-                {pickupAt && <p>Full Address: {pickupAt.fullAddress}</p>}
+                {pickupAt && <p style={{ color: 'grey' }}>Full Address: {pickupAt.fullAddress}</p>}
 
                 <Modal
                   isOpen={isPickupAtModalOpen}
@@ -206,6 +205,7 @@ export default function SignUpForm({ event }: SignUpFormProps) {
                   <LocationMapSelector
                     onSelectLocation={(loc) => {
                       setPickupAt(loc);
+                      setDropoffAt(loc); // Automatically populate Dropoff At
                       setIsPickupAtModalOpen(false);
                     }}
                     initialLocation={pickupAt || undefined}
@@ -220,10 +220,10 @@ export default function SignUpForm({ event }: SignUpFormProps) {
                   onClick={() => setIsDropoffAtModalOpen(true)}
                 >
                   {dropoffAt
-                    ? `Change: ${dropoffAt.name}`
+                    ? `${dropoffAt.name}`
                     : 'Select Dropoff Location on Map'}
                 </button>
-                {dropoffAt && <p>Full Address: {dropoffAt.fullAddress}</p>}
+                {dropoffAt && <p style={{ color: 'grey' }}>Full Address: {dropoffAt.fullAddress}</p>}
 
                 <Modal
                   isOpen={isDropoffAtModalOpen}
