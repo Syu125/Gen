@@ -33,6 +33,25 @@ export default function CreateEvent() {
     }
 
     try {
+      let imageUrl = '';
+      if (eventImage) {
+        const imageFormData = new FormData();
+        imageFormData.append('image', eventImage);
+
+        const uploadRes = await fetch('http://localhost:5000/api/upload-image', {
+          method: 'POST',
+          body: imageFormData,
+        });
+
+        if (uploadRes.ok) {
+          const data = await uploadRes.json();
+          imageUrl = data.imageUrl;
+        } else {
+          console.error('Failed to upload image');
+          // Optionally, proceed without image or show an error to the user
+        }
+      }
+
       const eventDateTime = new Date(`${formData.date}T${formData.time}`);
 
       const res = await fetch('http://localhost:5000/api/events', {
@@ -45,6 +64,7 @@ export default function CreateEvent() {
           description: formData.memo,
           date: eventDateTime.toISOString(),
           location: '', // You might want to add a location field to the form
+          imageUrl: imageUrl, // Include the image URL
           creatorId: session.user.id,
         }),
       });

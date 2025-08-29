@@ -12,6 +12,7 @@ interface EventCardProps {
     date: string;
     time?: string;
     type?: string;
+    image_url?: string; // Add image_url to the interface
   };
   variant?: 'dashboard' | 'grid';
   onClick?: (eventId: number) => void;
@@ -46,6 +47,10 @@ const EventCard: React.FC<EventCardProps> = ({
   return (
     <div className={cardClass} onClick={handleClick}>
       <div className={styles.eventCardContent}>
+        {event.image_url && (
+          <img src={`http://localhost:5000${event.image_url}`} alt="Event Image" className={styles.eventImage} />
+        )}
+        <div className={styles.overlay}></div>
         <div className={styles.eventCode}>
           {copied ? (
             <FaCheck className={`${styles.eventCodeIcon} ${styles.copied}`} />

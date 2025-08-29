@@ -5,5 +5,6 @@ CREATE TABLE events (
   description TEXT,
   date TIMESTAMP WITH TIME ZONE,
   location VARCHAR(255),
+  image_url VARCHAR(255),
   creator_id VARCHAR(255) NOT NULL REFERENCES users(id) ON DELETE CASCADE
 );
