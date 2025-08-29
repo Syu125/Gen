@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import styles from './SignUpForm.module.css';
 import { Event } from '@/types';
 import EventCard from '../event-card/EventCard';
+import LocationMapSelector from '../LocationMapSelector/LocationMapSelector';
+import Modal from '../Modal/Modal'; // Added import
 
 interface SignUpFormProps {
   event: Event;
@@ -16,7 +18,21 @@ export default function SignUpForm({ event }: SignUpFormProps) {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [transportationOption, setTransportationOption] = useState('');
+  const [leavingFrom, setLeavingFrom] = useState<{
+    lat: number;
+    lng: number;
+    address: string;
+  } | null>(null);
+  const [comingBackTo, setComingBackTo] = useState<{
+    lat: number;
+    lng: number;
+    address: string;
+  } | null>(null);
+  const [capacity, setCapacity] = useState(0);
   const [error, setError] = useState('');
+
+  const [isLeavingFromModalOpen, setIsLeavingFromModalOpen] = useState(false); // New state
+  const [isComingBackToModalOpen, setIsComingBackToModalOpen] = useState(false); // New state
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,7 +41,15 @@ export default function SignUpForm({ event }: SignUpFormProps) {
       return;
     }
     // Handle form submission
-    console.log({ name, email, password, transportationOption });
+    console.log({
+      name,
+      email,
+      password,
+      transportationOption,
+      leavingFrom,
+      comingBackTo,
+      capacity,
+    });
   };
 
   return (
@@ -62,68 +86,88 @@ export default function SignUpForm({ event }: SignUpFormProps) {
                 Getting there on my own
               </button>
             </div>
+            {transportationOption === '' && (
+              <p style={{ color: 'grey', fontStyle: 'italic' }}>
+                Please first select one of the options above
+              </p>
+            )}
           </div>
-          <div className={styles.formGroup}>
-            <label className={styles.label}>Name</label>
-            <input
-              type="text"
-              placeholder="Name"
-              className={styles.input}
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </div>
-          <div className={styles.formGroup}>
-            <label className={styles.label}>Email</label>
-            <input
-              type="email"
-              placeholder="Email"
-              className={styles.input}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <div className={styles.formGroup}>
-            <label className={styles.label}>Password</label>
-            <div style={{ position: 'relative' }}>
-              <input
-                type={showPassword ? 'text' : 'password'}
-                placeholder="Password"
-                className={styles.input}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                style={{
-                  position: 'absolute',
-                  right: 10,
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                }}
-              >
-                {showPassword ? 'Hide' : 'Show'}
-              </button>
+
+          {transportationOption === 'driving' && (
+            <div className={styles.formGroup}>
+              <h2 className={styles.title}>Driver Confirmation</h2>
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Leaving From</label>
+                <button
+                  type="button"
+                  className={styles.button}
+                  onClick={() => setIsLeavingFromModalOpen(true)}
+                >
+                  {leavingFrom
+                    ? `Change: ${leavingFrom.address}`
+                    : 'Select Location on Map'}
+                </button>
+                {leavingFrom && <p>Full Address: {leavingFrom.address}</p>}
+
+                <Modal
+                  isOpen={isLeavingFromModalOpen}
+                  onClose={() => setIsLeavingFromModalOpen(false)}
+                  title="Select Leaving From Location"
+                >
+                  <LocationMapSelector
+                    onSelectLocation={(loc) => {
+                      setLeavingFrom(loc);
+                      setIsLeavingFromModalOpen(false); // Close modal after selection
+                    }}
+                    initialLocation={leavingFrom || undefined}
+                  />
+                </Modal>
+              </div>
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Coming Back To</label>
+                <button
+                  type="button"
+                  className={styles.button}
+                  onClick={() => setIsComingBackToModalOpen(true)}
+                >
+                  {comingBackTo
+                    ? `Change: ${comingBackTo.address}`
+                    : 'Select Location on Map'}
+                </button>
+                {comingBackTo && <p>Full Address: {comingBackTo.address}</p>}
+
+                <Modal
+                  isOpen={isComingBackToModalOpen}
+                  onClose={() => setIsComingBackToModalOpen(false)}
+                  title="Select Coming Back To Location"
+                >
+                  <LocationMapSelector
+                    onSelectLocation={(loc) => {
+                      setComingBackTo(loc);
+                      setIsComingBackToModalOpen(false); // Close modal after selection
+                    }}
+                    initialLocation={comingBackTo || undefined}
+                  />
+                </Modal>
+              </div>
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Capacity</label>
+                <input
+                  type="number"
+                  placeholder="Enter capacity"
+                  className={styles.input}
+                  value={capacity}
+                  onChange={(e) => setCapacity(parseInt(e.target.value, 10))}
+                />
+              </div>
             </div>
-          </div>
-          <div className={styles.formGroup}>
-            <label className={styles.label}>Confirm Password</label>
-            <input
-              type="password"
-              placeholder="Confirm Password"
-              className={styles.input}
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
-          </div>
+          )}
           {error && <p style={{ color: 'red' }}>{error}</p>}
-          <button type="submit" className={styles.createButton}>
-            Create account
-          </button>
+          {transportationOption && (
+            <button type="submit" className={styles.createButton}>
+              Sign Up
+            </button>
+          )}
         </form>
       </div>
       <div className={styles.rightSection}>
