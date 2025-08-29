@@ -76,7 +76,7 @@ export default function Dashboard() {
       );
       if (res.ok) {
         // Event found, proceed to sign-up page
-        router.push(`/sign-up-event?code=${eventCode}`);
+        router.push(`/sign-up/${eventCode}`);
       } else if (res.status === 404) {
         setEventCodeError('Event code is invalid');
       } else {
