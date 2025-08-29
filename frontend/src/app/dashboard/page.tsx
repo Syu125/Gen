@@ -1,23 +1,36 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import styles from './page.module.css';
 import EventCard from '@/components/event-card/EventCard';
 
 export default function Dashboard() {
   const router = useRouter();
+  const { data: session } = useSession();
   const [eventCode, setEventCode] = useState('');
+  const [userEvents, setUserEvents] = useState([]);
 
-  const featuredEvent = {
-    id: 1,
-    code: 'C9NG7H',
-    title: 'Praise & Prayer',
-    subtitle: 'Night',
-    date: 'Feb 19',
-    time: '8:00PM',
-    type: 'UPCOMING EVENT',
-  };
+  useEffect(() => {
+    const fetchUserEvents = async () => {
+      if (session?.user?.id) {
+        try {
+          const res = await fetch(`http://localhost:5000/api/users/${session.user.id}/events`);
+          if (res.ok) {
+            const events = await res.json();
+            setUserEvents(events);
+          } else {
+            console.error('Failed to fetch user events');
+          }
+        } catch (error) {
+          console.error('Error fetching user events:', error);
+        }
+      }
+    };
+
+    fetchUserEvents();
+  }, [session]);
 
   const handleSignUp = (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,20 +67,30 @@ export default function Dashboard() {
         <div className={styles.greenLine}></div>
       </div>
 
-      <div className={styles.content}>
-        <div className={styles.leftSection}>
-          <EventCard
-            event={featuredEvent}
-            variant="dashboard"
-            onClick={handleEventClick}
-          />
+      <div className={`${styles.content} ${userEvents.length === 0 ? styles.contentCentered : ''}`}>
+        {userEvents.length > 0 && (
+          <div className={styles.leftSection}>
+            <div className={styles.userEventsSection}>
+              <h2>Your Created Events</h2>
+              <div className={styles.eventsGrid}>
+                {userEvents.map((event) => (
+                  <EventCard
+                    key={event.id}
+                    event={event}
+                    variant="grid"
+                    onClick={handleEventClick}
+                  />
+                ))}
+              </div>
+            </div>
 
-          <div className={styles.viewAllEvents} onClick={handleViewAllEvents}>
-            View all your events
+            <div className={styles.viewAllEvents} onClick={handleViewAllEvents}>
+              View all your events
+            </div>
           </div>
-        </div>
+        )}
 
-        <div className={styles.rightSection}>
+        <div className={`${styles.rightSection} ${userEvents.length === 0 ? styles.rightSectionCentered : ''}`}>
           <h1 className={styles.title}>Sign up for an event</h1>
           <div className={styles.prompt}>Enter the code below:</div>
 

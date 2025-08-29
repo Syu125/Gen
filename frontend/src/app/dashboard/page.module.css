@@ -39,12 +39,30 @@
  justify-content:center;
 }
 
+.contentCentered {
+  justify-content: center;
+}
+
 .leftSection {
   flex: 1;
   max-width: 500px;
 }
 
+.userEventsSection {
+  margin-top: 40px;
+}
 
+.userEventsSection h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.eventsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
 
 .viewAllEvents {
   margin-top: 16px;
@@ -60,6 +78,10 @@
 
 .rightSection {
   flex: 1;
+  max-width: 500px;
+}
+
+.rightSectionCentered {
   max-width: 500px;
 }
 
