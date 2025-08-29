@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from './EventCard.module.css';
 import { FaCopy, FaCheck } from 'react-icons/fa';
+import { format } from 'date-fns';
 
 interface EventCardProps {
   event: {
@@ -17,11 +18,11 @@ interface EventCardProps {
   className?: string;
 }
 
-const EventCard: React.FC<EventCardProps> = ({ 
-  event, 
-  variant = 'grid', 
+const EventCard: React.FC<EventCardProps> = ({
+  event,
+  variant = 'grid',
   onClick,
-  className 
+  className
 }) => {
   const [copied, setCopied] = useState(false);
 
@@ -37,6 +38,8 @@ const EventCard: React.FC<EventCardProps> = ({
     setCopied(true);
     setTimeout(() => setCopied(false), 2000); // Reset after 2 seconds
   };
+
+  const formattedDateTime = format(new Date(event.date), 'MMM dd | hh:mm a');
 
   const cardClass = `${styles.eventCard} ${styles[variant]} ${className || ''}`;
 
@@ -63,11 +66,12 @@ const EventCard: React.FC<EventCardProps> = ({
         )}
         
         <div className={styles.eventDateTime}>
-          {event.time ? `${event.date} | ${event.time}` : event.date}
+          {formattedDateTime}
         </div>
       </div>
     </div>
   );
 };
 
-export default EventCard; 
+export default EventCard;
+ 
