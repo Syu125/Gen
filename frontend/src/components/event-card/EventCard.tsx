@@ -3,6 +3,7 @@ import styles from './EventCard.module.css';
 import { FaCopy, FaCheck } from 'react-icons/fa';
 import { format } from 'date-fns';
 import { Event } from '@/types';
+import Image from 'next/image';
 
 interface EventCardProps {
   event: Event;
@@ -40,10 +41,12 @@ const EventCard: React.FC<EventCardProps> = ({
     <div className={cardClass} onClick={handleClick}>
       <div className={styles.eventCardContent}>
         {event.image_url && (
-          <img
+          <Image
             src={`http://localhost:5000${event.image_url}`}
             alt="Event Image"
             className={styles.eventImage}
+            layout="fill"
+            objectFit="cover"
           />
         )}
         <div className={styles.overlay}></div>
