@@ -7,16 +7,30 @@ import styles from './page.module.css';
 import EventCard from '@/components/event-card/EventCard';
 import Image from 'next/image';
 
+type Event = {
+  id: number;
+  code: string;
+  title: string;
+  date: string;
+  subtitle?: string;
+  time?: string;
+  type?: string;
+  image_url?: string;
+  [key: string]: any;
+};
+
 export default function AllEvents() {
   const router = useRouter();
   const { data: session } = useSession();
-  const [userEvents, setUserEvents] = useState([]);
+  const [userEvents, setUserEvents] = useState<Event[]>([]);
 
   useEffect(() => {
     const fetchUserEvents = async () => {
       if (session?.user?.id) {
         try {
-          const res = await fetch(`http://localhost:5000/api/users/${session.user.id}/events`);
+          const res = await fetch(
+            `http://localhost:5000/api/users/${session.user.id}/events`
+          );
           if (res.ok) {
             const events = await res.json();
             setUserEvents(events);
@@ -58,7 +72,13 @@ export default function AllEvents() {
       <div className={styles.content}>
         <h1 className={styles.title}>
           <a href="/dashboard">
-            <Image src="/home.svg" alt="Home" className={styles.homeIcon} width={32} height={32} />
+            <Image
+              src="/home.svg"
+              alt="Home"
+              className={styles.homeIcon}
+              width={32}
+              height={32}
+            />
           </a>
           Your Events
         </h1>

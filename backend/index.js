@@ -135,6 +135,22 @@ app.get('/api/events/:id', async (req, res) => {
   }
 });
 
+// Get an event by code
+app.get('/api/events/code/:code', async (req, res) => {
+  try {
+    const { code } = req.params;
+    const event = await Event.findByCode(code);
+    if (event) {
+      res.json(event);
+    } else {
+      res.status(404).json({ error: 'Event not found' });
+    }
+  } catch (err) {
+    logger.error(err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 // Image upload endpoint
 app.post('/api/upload-image', upload.single('image'), (req, res) => {
   try {

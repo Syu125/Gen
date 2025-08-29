@@ -8,6 +8,11 @@ const Event = {
     return rows[0];
   },
 
+  async findByCode(code) {
+    const { rows } = await db.query('SELECT * FROM events WHERE code = $1', [code]);
+    return rows[0];
+  },
+
   async findByCreator(creatorId) {
     const { rows } = await db.query(
       'SELECT * FROM events WHERE creator_id = $1',
