@@ -4,13 +4,14 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import styles from './page.module.css';
-import EventCard from '@/components/event-card/EventCard';
+import EventCard from '@/components/event-card/EventCard'; // Added comment to force re-compilation
 
 export default function Dashboard() {
   const router = useRouter();
   const { data: session } = useSession();
   const [eventCode, setEventCode] = useState('');
   const [userEvents, setUserEvents] = useState([]);
+  const [mostRecentUpcomingEvent, setMostRecentUpcomingEvent] = useState(null);
 
   useEffect(() => {
     const fetchUserEvents = async () => {
@@ -20,6 +21,16 @@ export default function Dashboard() {
           if (res.ok) {
             const events = await res.json();
             setUserEvents(events);
+
+            // Filter for upcoming events and find the most recent one
+            const now = new Date();
+            const upcomingEvents = events.filter(event => new Date(event.date) > now);
+            if (upcomingEvents.length > 0) {
+              const sortedEvents = upcomingEvents.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+              setMostRecentUpcomingEvent(sortedEvents[0]);
+            } else {
+              setMostRecentUpcomingEvent(null); // Set to null if no upcoming events
+            }
           } else {
             console.error('Failed to fetch user events');
           }
@@ -68,27 +79,21 @@ export default function Dashboard() {
       </div>
 
       <div className={`${styles.content} ${userEvents.length === 0 ? styles.contentCentered : ''}`}>
-        {userEvents.length > 0 && (
-          <div className={styles.leftSection}>
-            <div className={styles.userEventsSection}>
-              <h2>Your Created Events</h2>
-              <div className={styles.eventsGrid}>
-                {userEvents.map((event) => (
-                  <EventCard
-                    key={event.id}
-                    event={event}
-                    variant="grid"
-                    onClick={handleEventClick}
-                  />
-                ))}
-              </div>
-            </div>
+        <div className={styles.leftSection}>
+          {mostRecentUpcomingEvent ? (
+            <EventCard
+              event={mostRecentUpcomingEvent}
+              variant="dashboard"
+              onClick={handleEventClick}
+            />
+          ) : (
+            <p>No upcoming events.</p>
+          )}
 
-            <div className={styles.viewAllEvents} onClick={handleViewAllEvents}>
-              View all your events
-            </div>
+          <div className={styles.viewAllEvents} onClick={handleViewAllEvents}>
+            View all your events
           </div>
-        )}
+        </div>
 
         <div className={`${styles.rightSection} ${userEvents.length === 0 ? styles.rightSectionCentered : ''}`}>
           <h1 className={styles.title}>Sign up for an event</h1>
