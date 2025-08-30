@@ -7,12 +7,16 @@ import EventCard from '../event-card/EventCard';
 import LocationMapSelector from '../LocationMapSelector/LocationMapSelector';
 import Modal from '../Modal/Modal'; // Added import
 import { FaSearch } from 'react-icons/fa';
+import { useSession } from 'next-auth/react'; // Added import
 
 interface SignUpFormProps {
   event: Event;
 }
 
 export default function SignUpForm({ event }: SignUpFormProps) {
+  const { data: session } = useSession(); // Get session data
+  const userId = session?.user?.id; // Extract userId
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -51,24 +55,90 @@ export default function SignUpForm({ event }: SignUpFormProps) {
   const [isPickupAtModalOpen, setIsPickupAtModalOpen] = useState(false); // New state
   const [isDropoffAtModalOpen, setIsDropoffAtModalOpen] = useState(false); // New state
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => { // Made async
     e.preventDefault();
+    setError(''); // Clear previous errors
+
     if (password !== confirmPassword) {
       setError('Passwords do not match');
       return;
     }
-    // Handle form submission
-    console.log({
-      name,
-      email,
-      password,
-      transportationOption,
-      leavingFrom,
-      comingBackTo,
-      pickupAt, // Added to console.log
-      dropoffAt, // Added to console.log
-      capacity,
-    });
+
+    if (!userId) {
+      setError('User not logged in.');
+      return;
+    }
+
+    if (!event.id) {
+      setError('Event ID is missing.');
+      return;
+    }
+
+    let payload = {};
+    let endpoint = '';
+
+    switch (transportationOption) {
+      case 'driving':
+        if (!leavingFrom || !comingBackTo || capacity === 0) {
+          setError('Please fill all driver details.');
+          return;
+        }
+        payload = {
+          userId,
+          eventId: event.id,
+          leavingFrom,
+          comingBackTo,
+          capacity,
+        };
+        endpoint = '/api/sign-up/driver';
+        break;
+      case 'needs_ride':
+        if (!pickupAt || !dropoffAt) {
+          setError('Please fill all passenger details.');
+          return;
+        }
+        payload = {
+          userId,
+          eventId: event.id,
+          pickupAt,
+          dropoffAt,
+        };
+        endpoint = '/api/sign-up/passenger';
+        break;
+      case 'on_my_own':
+        payload = {
+          userId,
+          eventId: event.id,
+        };
+        endpoint = '/api/sign-up/attendee';
+        break;
+      default:
+        setError('Please select a transportation option.');
+        return;
+    }
+
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to sign up.');
+      }
+
+      const data = await response.json();
+      console.log('Sign up successful:', data);
+      alert('Signed up successfully!');
+      // Optionally, redirect or clear form
+    } catch (err: any) {
+      console.error('Sign up error:', err);
+      setError(err.message || 'An unexpected error occurred.');
+    }
   };
 
   return (
