@@ -1,7 +1,13 @@
 const db = require('../db');
 
 class Driver {
-  static async create({ userId, eventId, leavingFrom, comingBackTo, capacity }) {
+  static async create({
+    userId,
+    eventId,
+    leavingFrom,
+    comingBackTo,
+    capacity,
+  }) {
     const result = await db.query(
       `INSERT INTO drivers (
         user_id, event_id,
@@ -11,10 +17,17 @@ class Driver {
       ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
       RETURNING *`,
       [
-        userId, eventId,
-        leavingFrom.name, leavingFrom.fullAddress, leavingFrom.lat, leavingFrom.lng,
-        comingBackTo.name, comingBackTo.fullAddress, comingBackTo.lat, comingBackTo.lng,
-        capacity
+        userId,
+        eventId,
+        leavingFrom.name,
+        leavingFrom.fullAddress,
+        leavingFrom.lat,
+        leavingFrom.lng,
+        comingBackTo.name,
+        comingBackTo.fullAddress,
+        comingBackTo.lat,
+        comingBackTo.lng,
+        capacity,
       ]
     );
     return result.rows[0];

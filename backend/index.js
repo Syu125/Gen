@@ -189,7 +189,13 @@ app.post('/api/upload-image', upload.single('image'), (req, res) => {
 app.post('/api/sign-up/driver', async (req, res) => {
   try {
     const { userId, eventId, leavingFrom, comingBackTo, capacity } = req.body;
-    const newDriver = await Driver.create({ userId, eventId, leavingFrom, comingBackTo, capacity });
+    const newDriver = await Driver.create({
+      userId,
+      eventId,
+      leavingFrom,
+      comingBackTo,
+      capacity,
+    });
     res.status(201).json(newDriver);
   } catch (err) {
     logger.error(err);
@@ -201,7 +207,12 @@ app.post('/api/sign-up/driver', async (req, res) => {
 app.post('/api/sign-up/passenger', async (req, res) => {
   try {
     const { userId, eventId, pickupAt, dropoffAt } = req.body;
-    const newPassenger = await Passenger.create({ userId, eventId, pickupAt, dropoffAt });
+    const newPassenger = await Passenger.create({
+      userId,
+      eventId,
+      pickupAt,
+      dropoffAt,
+    });
     res.status(201).json(newPassenger);
   } catch (err) {
     logger.error(err);

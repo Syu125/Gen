@@ -10,9 +10,16 @@ class Passenger {
       ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
       RETURNING *`,
       [
-        userId, eventId,
-        pickupAt.name, pickupAt.fullAddress, pickupAt.lat, pickupAt.lng,
-        dropoffAt.name, dropoffAt.fullAddress, dropoffAt.lat, dropoffAt.lng
+        userId,
+        eventId,
+        pickupAt.name,
+        pickupAt.fullAddress,
+        pickupAt.lat,
+        pickupAt.lng,
+        dropoffAt.name,
+        dropoffAt.fullAddress,
+        dropoffAt.lat,
+        dropoffAt.lng,
       ]
     );
     return result.rows[0];

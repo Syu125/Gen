@@ -11,12 +11,13 @@ import { Event } from '@/types';
 export default function AllEvents() {
   const router = useRouter();
   const { data: session } = useSession();
-  const [userEvents, setUserEvents] = useState<Event[]>([]); // Events created by user
-  const [signedUpEvents, setSignedUpEvents] = useState<Event[]>([]); // Events user signed up for
+  // const [userEvents, setUserEvents] = useState<Event[]>([]); // Events created by user
+  // const [signedUpEvents, setSignedUpEvents] = useState<Event[]>([]); // Events user signed up for
   const [allEventsForDisplay, setAllEventsForDisplay] = useState<Event[]>([]); // Combined events
 
   useEffect(() => {
-    const fetchAllEvents = async () => { // Renamed function
+    const fetchAllEvents = async () => {
+      // Renamed function
       if (session?.user?.id) {
         try {
           // Fetch events created by the user
@@ -26,7 +27,7 @@ export default function AllEvents() {
           let createdEvents: Event[] = [];
           if (createdRes.ok) {
             createdEvents = await createdRes.json();
-            setUserEvents(createdEvents);
+            // setUserEvents(createdEvents);
           } else {
             console.error('Failed to fetch created events');
           }
@@ -38,7 +39,7 @@ export default function AllEvents() {
           let signedUpEventsData: Event[] = [];
           if (signedUpRes.ok) {
             signedUpEventsData = await signedUpRes.json();
-            setSignedUpEvents(signedUpEventsData);
+            // setSignedUpEvents(signedUpEventsData);
           } else {
             console.error('Failed to fetch signed-up events');
           }
@@ -50,7 +51,6 @@ export default function AllEvents() {
           });
           const combinedEvents = Array.from(combinedEventsMap.values());
           setAllEventsForDisplay(combinedEvents);
-
         } catch (error) {
           console.error('Error fetching all events:', error);
         }

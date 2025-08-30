@@ -11,8 +11,8 @@ export default function Dashboard() {
   const router = useRouter();
   const { data: session } = useSession();
   const [eventCode, setEventCode] = useState('');
-  const [userEvents, setUserEvents] = useState<Event[]>([]); // Events created by user
-  const [signedUpEvents, setSignedUpEvents] = useState<Event[]>([]); // Events user signed up for
+  // const [userEvents, setUserEvents] = useState<Event[]>([]); // Events created by user
+  // const [signedUpEvents, setSignedUpEvents] = useState<Event[]>([]); // Events user signed up for
   const [allEventsForDisplay, setAllEventsForDisplay] = useState<Event[]>([]); // Combined events
   const [mostRecentUpcomingEvent, setMostRecentUpcomingEvent] =
     useState<Event | null>(null);
@@ -31,7 +31,7 @@ export default function Dashboard() {
           let createdEvents: Event[] = [];
           if (createdRes.ok) {
             createdEvents = await createdRes.json();
-            setUserEvents(createdEvents);
+            // setUserEvents(createdEvents);
           } else {
             console.error('Failed to fetch created events');
           }
@@ -43,7 +43,7 @@ export default function Dashboard() {
           let signedUpEventsData: Event[] = [];
           if (signedUpRes.ok) {
             signedUpEventsData = await signedUpRes.json();
-            setSignedUpEvents(signedUpEventsData);
+            // setSignedUpEvents(signedUpEventsData);
           } else {
             console.error('Failed to fetch signed-up events');
           }

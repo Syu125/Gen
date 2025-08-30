@@ -4,8 +4,15 @@ import SignUpForm from '@/components/sign-up-form/SignUpForm';
 import React, { useState, useEffect } from 'react';
 import { Event } from '@/types';
 
-export default function SignUpPage({ params }: { params: { eventCode: string } }) {
-  const { eventCode } = params;
+interface SignUpPageProps {
+  params: {
+    eventCode: string;
+  };
+}
+
+export default function SignUpPage({ params }: SignUpPageProps) {
+  // Explicitly cast params to ensure correct type interpretation
+  const { eventCode } = params as { eventCode: string };
   const [event, setEvent] = useState<Event | null>(null);
   const [loading, setLoading] = useState(true);
 

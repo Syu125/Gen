@@ -1,17 +1,36 @@
 'use client';
 
 import React, { useState, useCallback, useRef } from 'react';
-import { GoogleMap, useLoadScript, Marker, Autocomplete } from '@react-google-maps/api'; // Added Autocomplete
+import {
+  GoogleMap,
+  useLoadScript,
+  Marker,
+  Autocomplete,
+} from '@react-google-maps/api'; // Added Autocomplete
 import styles from './LocationMapSelector.module.css';
 
-const libraries: ("places" | "drawing" | "geometry" | "localContext" | "visualization")[] = ["places"];
+const libraries: (
+  | 'places'
+  | 'drawing'
+  | 'geometry'
+  | 'localContext'
+  | 'visualization'
+)[] = ['places'];
 
 interface LocationMapSelectorProps {
-  onSelectLocation: (location: { lat: number; lng: number; name: string; fullAddress: string }) => void;
+  onSelectLocation: (location: {
+    lat: number;
+    lng: number;
+    name: string;
+    fullAddress: string;
+  }) => void;
   initialLocation?: { lat: number; lng: number };
 }
 
-export default function LocationMapSelector({ onSelectLocation, initialLocation }: LocationMapSelectorProps) {
+export default function LocationMapSelector({
+  onSelectLocation,
+  initialLocation,
+}: LocationMapSelectorProps) {
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '', // Replace with your actual API key
     libraries,
@@ -24,9 +43,12 @@ export default function LocationMapSelector({ onSelectLocation, initialLocation 
 
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null); // New state for Autocomplete
 
-  const onAutocompleteLoad = useCallback((autocomplete: google.maps.places.Autocomplete) => {
-    autocompleteRef.current = autocomplete;
-  }, []);
+  const onAutocompleteLoad = useCallback(
+    (autocomplete: google.maps.places.Autocomplete) => {
+      autocompleteRef.current = autocomplete;
+    },
+    []
+  );
 
   const onAutocompleteUnmount = useCallback(() => {
     autocompleteRef.current = null;
@@ -56,46 +78,63 @@ export default function LocationMapSelector({ onSelectLocation, initialLocation 
     }
   }, [onSelectLocation]);
 
-  const [marker, setMarker] = useState<{ lat: number; lng: number } | null>(initialLocation || null);
+  const [marker, setMarker] = useState<{ lat: number; lng: number } | null>(
+    initialLocation || null
+  );
   const [address, setAddress] = useState<string>('');
 
-  const onMapClick = useCallback(async (e: google.maps.MapMouseEvent) => {
-    if (e.latLng) {
-      const lat = e.latLng.lat();
-      const lng = e.latLng.lng();
-      setMarker({ lat, lng });
+  const onMapClick = useCallback(
+    async (e: google.maps.MapMouseEvent) => {
+      if (e.latLng) {
+        const lat = e.latLng.lat();
+        const lng = e.latLng.lng();
+        setMarker({ lat, lng });
 
-      // Reverse geocode to get address
-      const geocoder = new google.maps.Geocoder();
-      geocoder.geocode({ location: { lat, lng } }, (results, status) => {
-        if (status === 'OK' && results && results[0]) {
-          const fullAddress = results[0].formatted_address;
-          let locationName = fullAddress; // Default to full address
+        // Reverse geocode to get address
+        const geocoder = new google.maps.Geocoder();
+        geocoder.geocode({ location: { lat, lng } }, (results, status) => {
+          if (status === 'OK' && results && results[0]) {
+            const fullAddress = results[0].formatted_address;
+            let locationName = fullAddress; // Default to full address
 
-          // Try to find a more concise name from address components
-          const localityComponent = results[0].address_components.find(
-            (component) => component.types.includes('locality') || component.types.includes('political')
-          );
+            // Try to find a more concise name from address components
+            const localityComponent = results[0].address_components.find(
+              (component) =>
+                component.types.includes('locality') ||
+                component.types.includes('political')
+            );
 
-          if (localityComponent) {
-            locationName = localityComponent.long_name;
-          } else {
-            // Fallback to the first part of the formatted address if no locality/political component
-            const firstCommaIndex = fullAddress.indexOf(',');
-            if (firstCommaIndex !== -1) {
-              locationName = fullAddress.substring(0, firstCommaIndex);
+            if (localityComponent) {
+              locationName = localityComponent.long_name;
+            } else {
+              // Fallback to the first part of the formatted address if no locality/political component
+              const firstCommaIndex = fullAddress.indexOf(',');
+              if (firstCommaIndex !== -1) {
+                locationName = fullAddress.substring(0, firstCommaIndex);
+              }
             }
-          }
 
-          setAddress(locationName); // Update local state to display the name
-          onSelectLocation({ lat, lng, name: locationName, fullAddress: fullAddress }); // Pass both name and fullAddress
-        } else {
-          setAddress('Location not found');
-          onSelectLocation({ lat, lng, name: 'Location not found', fullAddress: 'Location not found' });
-        }
-      });
-    }
-  }, [onSelectLocation]);
+            setAddress(locationName); // Update local state to display the name
+            onSelectLocation({
+              lat,
+              lng,
+              name: locationName,
+              fullAddress: fullAddress,
+            }); // Pass both name and fullAddress
+          } else {
+            setAddress('Location not found');
+            onSelectLocation({
+              lat,
+              lng,
+              name: 'Location not found',
+              fullAddress: 'Location not found',
+            });
+          }
+        });
+      }
+    },
+    [onSelectLocation]
+  );
 
   const mapContainerStyle = {
     width: '100%',
@@ -135,7 +174,7 @@ export default function LocationMapSelector({ onSelectLocation, initialLocation 
           },
         }}
       >
-        {marker && <Marker position={marker} />}}
+        {marker && <Marker position={marker} />}
       </GoogleMap>
       {address && <p>Selected Location: {address}</p>}
     </div>

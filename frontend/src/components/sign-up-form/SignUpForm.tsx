@@ -19,11 +19,6 @@ export default function SignUpForm({ event }: SignUpFormProps) {
   const userId = session?.user?.id; // Extract userId
   const router = useRouter(); // Initialize router
 
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
   const [transportationOption, setTransportationOption] = useState('');
   const [leavingFrom, setLeavingFrom] = useState<{
     lat: number;
@@ -57,14 +52,10 @@ export default function SignUpForm({ event }: SignUpFormProps) {
   const [isPickupAtModalOpen, setIsPickupAtModalOpen] = useState(false); // New state
   const [isDropoffAtModalOpen, setIsDropoffAtModalOpen] = useState(false); // New state
 
-  const handleSubmit = async (e: React.FormEvent) => { // Made async
+  const handleSubmit = async (e: React.FormEvent) => {
+    // Made async
     e.preventDefault();
     setError(''); // Clear previous errors
-
-    if (password !== confirmPassword) {
-      setError('Passwords do not match');
-      return;
-    }
 
     if (!userId) {
       setError('User not logged in.');
@@ -136,7 +127,7 @@ export default function SignUpForm({ event }: SignUpFormProps) {
       const data = await response.json();
       console.log('Sign up successful:', data);
       router.push('/dashboard'); // Redirect to dashboard
-    } catch (err: any) {
+    } catch (err) {
       console.error('Sign up error:', err);
       setError(err.message || 'An unexpected error occurred.');
     }
@@ -379,8 +370,8 @@ export default function SignUpForm({ event }: SignUpFormProps) {
             <div className={styles.formGroup}>
               <h2 className={styles.subtitle}>Attendee Details</h2>
               <p>
-                You've chosen to get to the event on your own. We look forward
-                to seeing you there!
+                You&apos;ve chosen to get to the event on your own. We look
+                forward to seeing you there!
               </p>
             </div>
           )}
