@@ -46,6 +46,25 @@ const Event = {
     );
     return rows[0];
   },
+
+  async findSignedUpEventsByUserId(userId) {
+    const { rows } = await db.query(
+      `SELECT DISTINCT e.*,
+              CASE
+                  WHEN d.user_id IS NOT NULL THEN 'driver'
+                  WHEN p.user_id IS NOT NULL THEN 'passenger'
+                  WHEN a.user_id IS NOT NULL THEN 'attendee'
+                  ELSE NULL
+              END as role
+       FROM events e
+       LEFT JOIN drivers d ON e.id = d.event_id AND d.user_id = $1
+       LEFT JOIN passengers p ON e.id = p.event_id AND p.user_id = $1
+       LEFT JOIN attendees a ON e.id = a.event_id AND a.user_id = $1
+       WHERE d.user_id IS NOT NULL OR p.user_id IS NOT NULL OR a.user_id IS NOT NULL;`,
+      [userId]
+    );
+    return rows;
+  },
 };
 
 module.exports = Event;

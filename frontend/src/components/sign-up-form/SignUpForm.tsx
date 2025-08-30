@@ -8,6 +8,7 @@ import LocationMapSelector from '../LocationMapSelector/LocationMapSelector';
 import Modal from '../Modal/Modal'; // Added import
 import { FaSearch } from 'react-icons/fa';
 import { useSession } from 'next-auth/react'; // Added import
+import { useRouter } from 'next/navigation'; // Added import
 
 interface SignUpFormProps {
   event: Event;
@@ -16,6 +17,7 @@ interface SignUpFormProps {
 export default function SignUpForm({ event }: SignUpFormProps) {
   const { data: session } = useSession(); // Get session data
   const userId = session?.user?.id; // Extract userId
+  const router = useRouter(); // Initialize router
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -133,8 +135,7 @@ export default function SignUpForm({ event }: SignUpFormProps) {
 
       const data = await response.json();
       console.log('Sign up successful:', data);
-      alert('Signed up successfully!');
-      // Optionally, redirect or clear form
+      router.push('/dashboard'); // Redirect to dashboard
     } catch (err: any) {
       console.error('Sign up error:', err);
       setError(err.message || 'An unexpected error occurred.');

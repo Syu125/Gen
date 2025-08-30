@@ -106,6 +106,18 @@ app.get('/api/users/:id/events', async (req, res) => {
   }
 });
 
+// Get all events a user has signed up for
+app.get('/api/users/:userId/signed-up-events', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const events = await Event.findSignedUpEventsByUserId(userId);
+    res.json(events);
+  } catch (err) {
+    logger.error(err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 // Create a new event
 app.post('/api/events', async (req, res) => {
   try {
