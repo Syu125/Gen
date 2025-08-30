@@ -121,16 +121,27 @@ export default function SignUpForm({ event }: SignUpFormProps) {
                   type="button"
                   className={styles.button}
                   onClick={() => setIsLeavingFromModalOpen(true)}
-                  style={{ color: 'grey', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+                  style={{
+                    color: leavingFrom ? 'black' : 'grey',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }}
                 >
-                  <span style={{ marginRight: '8px' }}> {/* Added margin-right */}
+                  <span style={{ marginRight: '8px' }}>
+                    {' '}
+                    {/* Added margin-right */}
                     {leavingFrom
                       ? `${leavingFrom.name}`
                       : 'Select Location on Map'}
                   </span>
                   <FaSearch style={{ color: 'grey' }} />
                 </button>
-                {leavingFrom && <p style={{ color: 'grey' }}>Address: {leavingFrom.fullAddress}</p>}
+                {leavingFrom && (
+                  <p style={{ color: 'grey' }}>
+                    Address: {leavingFrom.fullAddress}
+                  </p>
+                )}
 
                 <Modal
                   isOpen={isLeavingFromModalOpen}
@@ -153,16 +164,27 @@ export default function SignUpForm({ event }: SignUpFormProps) {
                   type="button"
                   className={styles.button}
                   onClick={() => setIsComingBackToModalOpen(true)}
-                  style={{ color: 'grey', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+                  style={{
+                    color: comingBackTo ? 'black' : 'grey',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }}
                 >
-                  <span style={{ marginRight: '8px' }}> {/* Added margin-right */}
+                  <span style={{ marginRight: '8px' }}>
+                    {' '}
+                    {/* Added margin-right */}
                     {comingBackTo
                       ? `${comingBackTo.name}`
                       : 'Select Location on Map'}
                   </span>
                   <FaSearch style={{ color: 'grey' }} />
                 </button>
-                {comingBackTo && <p style={{ color: 'grey' }}>Address: {comingBackTo.fullAddress}</p>}
+                {comingBackTo && (
+                  <p style={{ color: 'grey' }}>
+                    Address: {comingBackTo.fullAddress}
+                  </p>
+                )}
 
                 <Modal
                   isOpen={isComingBackToModalOpen}
@@ -179,7 +201,9 @@ export default function SignUpForm({ event }: SignUpFormProps) {
                 </Modal>
               </div>
               <div className={styles.formGroup}>
-                <label className={styles.label}>Capacity</label>
+                <label className={styles.label}>
+                  Capacity (How many other people can you drive?)
+                </label>
                 <input
                   type="number"
                   placeholder="Enter capacity"
@@ -199,16 +223,27 @@ export default function SignUpForm({ event }: SignUpFormProps) {
                   type="button"
                   className={styles.button}
                   onClick={() => setIsPickupAtModalOpen(true)}
-                  style={{ color: 'grey', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+                  style={{
+                    color: pickupAt ? 'black' : 'grey',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }}
                 >
-                  <span style={{ marginRight: '8px' }}> {/* Added margin-right */}
+                  <span style={{ marginRight: '8px' }}>
+                    {' '}
+                    {/* Added margin-right */}
                     {pickupAt
                       ? `${pickupAt.name}`
                       : 'Select Pickup Location on Map'}
                   </span>
                   <FaSearch style={{ color: 'grey' }} />
                 </button>
-                {pickupAt && <p style={{ color: 'grey' }}>Full Address: {pickupAt.fullAddress}</p>}
+                {pickupAt && (
+                  <p style={{ color: 'grey' }}>
+                    Full Address: {pickupAt.fullAddress}
+                  </p>
+                )}
 
                 <Modal
                   isOpen={isPickupAtModalOpen}
@@ -231,16 +266,27 @@ export default function SignUpForm({ event }: SignUpFormProps) {
                   type="button"
                   className={styles.button}
                   onClick={() => setIsDropoffAtModalOpen(true)}
-                  style={{ color: 'grey', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+                  style={{
+                    color: dropoffAt ? 'black' : 'grey',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }}
                 >
-                  <span style={{ marginRight: '8px' }}> {/* Added margin-right */}
+                  <span style={{ marginRight: '8px' }}>
+                    {' '}
+                    {/* Added margin-right */}
                     {dropoffAt
                       ? `${dropoffAt.name}`
                       : 'Select Dropoff Location on Map'}
                   </span>
                   <FaSearch style={{ color: 'grey' }} />
                 </button>
-                {dropoffAt && <p style={{ color: 'grey' }}>Full Address: {dropoffAt.fullAddress}</p>}
+                {dropoffAt && (
+                  <p style={{ color: 'grey' }}>
+                    Full Address: {dropoffAt.fullAddress}
+                  </p>
+                )}
 
                 <Modal
                   isOpen={isDropoffAtModalOpen}
