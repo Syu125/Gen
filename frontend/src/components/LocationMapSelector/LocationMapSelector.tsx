@@ -2,6 +2,7 @@
 
 import React, { useState, useCallback, useRef } from 'react';
 import { GoogleMap, useLoadScript, Marker, Autocomplete } from '@react-google-maps/api'; // Added Autocomplete
+import styles from './LocationMapSelector.module.css';
 
 const libraries: ("places" | "drawing" | "geometry" | "localContext" | "visualization")[] = ["places"];
 
@@ -117,23 +118,7 @@ export default function LocationMapSelector({ onSelectLocation, initialLocation 
           <input
             type="text"
             placeholder="Search for a place"
-            style={{
-              boxSizing: `border-box`,
-              border: `1px solid transparent`,
-              width: `240px`,
-              height: `32px`,
-              padding: `0 12px`,
-              borderRadius: `3px`,
-              boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-              fontSize: `14px`,
-              outline: `none`,
-              textOverflow: `ellipses`,
-              position: "absolute",
-              left: "50%",
-              marginLeft: "-120px",
-              marginTop: "10px",
-              zIndex: 10,
-            }}
+            className={styles.searchBox}
           />
         </Autocomplete>
       </div>
@@ -143,6 +128,12 @@ export default function LocationMapSelector({ onSelectLocation, initialLocation 
         center={center}
         onLoad={onMapLoad}
         onClick={onMapClick}
+        options={{
+          mapTypeControl: true,
+          mapTypeControlOptions: {
+            style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+          },
+        }}
       >
         {marker && <Marker position={marker} />}}
       </GoogleMap>
