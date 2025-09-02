@@ -84,6 +84,8 @@
 .rightSection {
   flex: 1;
   max-width: 600px;
+  display: flex;
+  flex-direction: column;
 }
 
 .tableContainer {
@@ -170,4 +172,22 @@
 
 .exportButton:hover {
   background-color: #d0d0d0;
+} 
+
+.generateButton {
+  background-color: #4CAF50; /* Green */
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-bottom: 20px;
+  align-self: flex-end;
+}
+
+.generateButton:hover {
+  background-color: #45a049;
 } 

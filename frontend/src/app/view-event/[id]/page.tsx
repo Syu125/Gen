@@ -115,6 +115,7 @@ export default function ViewEvent() {
         </div>
 
         <div className={styles.rightSection}>
+          <button className={styles.generateButton}>Generate rides</button>
           <div className={styles.tableContainer}>
             <table className={styles.table}>
               <thead className={styles.tableHeader}>
