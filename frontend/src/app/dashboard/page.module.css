@@ -1,7 +1,9 @@
 .page {
-  min-height: relative;
+  min-height: 100vh;
   background-color: white;
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .header {
@@ -37,6 +39,7 @@
   gap: 75px;
   align-items: center;
   justify-content: center;
+  flex-grow: 1;
 }
 
 .contentCentered {
@@ -46,6 +49,14 @@
 .leftSection {
   flex: 1;
   max-width: 500px;
+}
+
+.leftSectionTop {
+  height: 575px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .userEventsSection {

@@ -14,7 +14,7 @@ export default function Dashboard() {
   // const [userEvents, setUserEvents] = useState<Event[]>([]); // Events created by user
   // const [signedUpEvents, setSignedUpEvents] = useState<Event[]>([]); // Events user signed up for
   const [allEventsForDisplay, setAllEventsForDisplay] = useState<Event[]>([]); // Combined events
-  const [mostRecentUpcomingEvent, setMostRecentUpcomingEvent] =
+  const [featuredEvent, setFeaturedEvent] =
     useState<Event | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [eventCodeError, setEventCodeError] = useState('');
@@ -31,7 +31,6 @@ export default function Dashboard() {
           let createdEvents: Event[] = [];
           if (createdRes.ok) {
             createdEvents = await createdRes.json();
-            // setUserEvents(createdEvents);
           } else {
             console.error('Failed to fetch created events');
           }
@@ -43,7 +42,6 @@ export default function Dashboard() {
           let signedUpEventsData: Event[] = [];
           if (signedUpRes.ok) {
             signedUpEventsData = await signedUpRes.json();
-            // setSignedUpEvents(signedUpEventsData);
           } else {
             console.error('Failed to fetch signed-up events');
           }
@@ -56,19 +54,20 @@ export default function Dashboard() {
           const combinedEvents = Array.from(combinedEventsMap.values());
           setAllEventsForDisplay(combinedEvents);
 
-          // Filter for upcoming events and find the most recent one from combined events
+          // Determine the featured event
           const now = new Date();
           const upcomingEvents = combinedEvents.filter(
             (event: Event) => new Date(event.date) > now
           );
+
           if (upcomingEvents.length > 0) {
             const sortedEvents = upcomingEvents.sort(
               (a: Event, b: Event) =>
                 new Date(a.date).getTime() - new Date(b.date).getTime()
             );
-            setMostRecentUpcomingEvent(sortedEvents[0]);
+            setFeaturedEvent(sortedEvents[0]);
           } else {
-            setMostRecentUpcomingEvent(null);
+            setFeaturedEvent(null);
           }
         } catch (error) {
           console.error('Error fetching all events:', error);
@@ -143,15 +142,17 @@ export default function Dashboard() {
       >
         {allEventsForDisplay.length > 0 && (
           <div className={styles.leftSection}>
-            {mostRecentUpcomingEvent ? (
-              <EventCard
-                event={mostRecentUpcomingEvent}
-                variant="dashboard"
-                onClick={handleEventClick}
-              />
-            ) : (
-              <p>No upcoming events.</p>
-            )}
+            <div className={styles.leftSectionTop}>
+              {featuredEvent ? (
+                <EventCard
+                  event={featuredEvent}
+                  variant="dashboard"
+                  onClick={handleEventClick}
+                />
+              ) : (
+                <p>No upcoming events.</p>
+              )}
+            </div>
 
             <div className={styles.viewAllEvents} onClick={handleViewAllEvents}>
               View all your events
