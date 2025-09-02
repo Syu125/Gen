@@ -11,28 +11,53 @@ import { Event } from '@/types';
 export default function AllEvents() {
   const router = useRouter();
   const { data: session } = useSession();
-  const [userEvents, setUserEvents] = useState<Event[]>([]);
+  // const [userEvents, setUserEvents] = useState<Event[]>([]); // Events created by user
+  // const [signedUpEvents, setSignedUpEvents] = useState<Event[]>([]); // Events user signed up for
+  const [allEventsForDisplay, setAllEventsForDisplay] = useState<Event[]>([]); // Combined events
 
   useEffect(() => {
-    const fetchUserEvents = async () => {
+    const fetchAllEvents = async () => {
+      // Renamed function
       if (session?.user?.id) {
         try {
-          const res = await fetch(
+          // Fetch events created by the user
+          const createdRes = await fetch(
             `http://localhost:5000/api/users/${session.user.id}/events`
           );
-          if (res.ok) {
-            const events: Event[] = await res.json();
-            setUserEvents(events);
+          let createdEvents: Event[] = [];
+          if (createdRes.ok) {
+            createdEvents = await createdRes.json();
+            // setUserEvents(createdEvents);
           } else {
-            console.error('Failed to fetch user events');
+            console.error('Failed to fetch created events');
           }
+
+          // Fetch events the user has signed up for
+          const signedUpRes = await fetch(
+            `http://localhost:5000/api/users/${session.user.id}/signed-up-events`
+          );
+          let signedUpEventsData: Event[] = [];
+          if (signedUpRes.ok) {
+            signedUpEventsData = await signedUpRes.json();
+            // setSignedUpEvents(signedUpEventsData);
+          } else {
+            console.error('Failed to fetch signed-up events');
+          }
+
+          // Combine and deduplicate events
+          const combinedEventsMap = new Map<number, Event>();
+          [...createdEvents, ...signedUpEventsData].forEach((event) => {
+            combinedEventsMap.set(event.id, event);
+          });
+          const combinedEvents = Array.from(combinedEventsMap.values());
+          setAllEventsForDisplay(combinedEvents);
         } catch (error) {
-          console.error('Error fetching user events:', error);
+          console.error('Error fetching all events:', error);
         }
       }
     };
 
-    fetchUserEvents();
+    fetchAllEvents(); // Call the renamed function
   }, [session]);
 
   const handleLogout = () => {
@@ -73,8 +98,8 @@ export default function AllEvents() {
         </h1>
 
         <div className={styles.eventsGrid}>
-          {userEvents.length > 0 ? (
-            userEvents.map((event, index) => (
+          {allEventsForDisplay.length > 0 ? ( // Changed from userEvents.length
+            allEventsForDisplay.map((event, index) => (
               <EventCard
                 key={event.id}
                 event={event}
@@ -84,12 +109,12 @@ export default function AllEvents() {
               />
             ))
           ) : (
-            <p>No events created yet.</p>
+            <p>No events found.</p> // Changed text
           )}
         </div>
 
         <div className={styles.loadMore}>
-          {userEvents.length > 6 && (
+          {allEventsForDisplay.length > 6 && ( // Changed from userEvents.length
             <p className={styles.showMoreText} onClick={handleLoadMore}>
               Show more events
             </p>

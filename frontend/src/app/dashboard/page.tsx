@@ -11,50 +11,74 @@ export default function Dashboard() {
   const router = useRouter();
   const { data: session } = useSession();
   const [eventCode, setEventCode] = useState('');
-  const [userEvents, setUserEvents] = useState<Event[]>([]);
+  // const [userEvents, setUserEvents] = useState<Event[]>([]); // Events created by user
+  // const [signedUpEvents, setSignedUpEvents] = useState<Event[]>([]); // Events user signed up for
+  const [allEventsForDisplay, setAllEventsForDisplay] = useState<Event[]>([]); // Combined events
   const [mostRecentUpcomingEvent, setMostRecentUpcomingEvent] =
     useState<Event | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [eventCodeError, setEventCodeError] = useState('');
 
   useEffect(() => {
-    const fetchUserEvents = async () => {
+    const fetchAllEvents = async () => {
       if (session?.user?.id) {
-        setIsLoading(true); // Set loading to true before fetching
+        setIsLoading(true);
         try {
-          const res = await fetch(
+          // Fetch events created by the user
+          const createdRes = await fetch(
             `http://localhost:5000/api/users/${session.user.id}/events`
           );
-          if (res.ok) {
-            const events: Event[] = await res.json();
-            setUserEvents(events);
-
-            // Filter for upcoming events and find the most recent one
-            const now = new Date();
-            const upcomingEvents = events.filter(
-              (event: Event) => new Date(event.date) > now
-            );
-            if (upcomingEvents.length > 0) {
-              const sortedEvents = upcomingEvents.sort(
-                (a: Event, b: Event) =>
-                  new Date(a.date).getTime() - new Date(b.date).getTime()
-              );
-              setMostRecentUpcomingEvent(sortedEvents[0]);
-            } else {
-              setMostRecentUpcomingEvent(null); // Set to null if no upcoming events
-            }
+          let createdEvents: Event[] = [];
+          if (createdRes.ok) {
+            createdEvents = await createdRes.json();
+            // setUserEvents(createdEvents);
           } else {
-            console.error('Failed to fetch user events');
+            console.error('Failed to fetch created events');
+          }
+
+          // Fetch events the user has signed up for
+          const signedUpRes = await fetch(
+            `http://localhost:5000/api/users/${session.user.id}/signed-up-events`
+          );
+          let signedUpEventsData: Event[] = [];
+          if (signedUpRes.ok) {
+            signedUpEventsData = await signedUpRes.json();
+            // setSignedUpEvents(signedUpEventsData);
+          } else {
+            console.error('Failed to fetch signed-up events');
+          }
+
+          // Combine and deduplicate events
+          const combinedEventsMap = new Map<number, Event>();
+          [...createdEvents, ...signedUpEventsData].forEach((event) => {
+            combinedEventsMap.set(event.id, event);
+          });
+          const combinedEvents = Array.from(combinedEventsMap.values());
+          setAllEventsForDisplay(combinedEvents);
+
+          // Filter for upcoming events and find the most recent one from combined events
+          const now = new Date();
+          const upcomingEvents = combinedEvents.filter(
+            (event: Event) => new Date(event.date) > now
+          );
+          if (upcomingEvents.length > 0) {
+            const sortedEvents = upcomingEvents.sort(
+              (a: Event, b: Event) =>
+                new Date(a.date).getTime() - new Date(b.date).getTime()
+            );
+            setMostRecentUpcomingEvent(sortedEvents[0]);
+          } else {
+            setMostRecentUpcomingEvent(null);
           }
         } catch (error) {
-          console.error('Error fetching user events:', error);
+          console.error('Error fetching all events:', error);
         } finally {
-          setIsLoading(false); // Set loading to false after fetching
+          setIsLoading(false);
         }
       }
     };
 
-    fetchUserEvents();
+    fetchAllEvents();
   }, [session]);
 
   if (isLoading) {
@@ -76,7 +100,7 @@ export default function Dashboard() {
       );
       if (res.ok) {
         // Event found, proceed to sign-up page
-        router.push(`/sign-up-event?code=${eventCode}`);
+        router.push(`/sign-up/${eventCode}`);
       } else if (res.status === 404) {
         setEventCodeError('Event code is invalid');
       } else {
@@ -115,9 +139,9 @@ export default function Dashboard() {
       </div>
 
       <div
-        className={`${styles.content} ${userEvents.length === 0 ? styles.contentCentered : ''}`}
+        className={`${styles.content} ${allEventsForDisplay.length === 0 ? styles.contentCentered : ''}`}
       >
-        {userEvents.length > 0 && (
+        {allEventsForDisplay.length > 0 && (
           <div className={styles.leftSection}>
             {mostRecentUpcomingEvent ? (
               <EventCard
@@ -136,7 +160,7 @@ export default function Dashboard() {
         )}
 
         <div
-          className={`${styles.rightSection} ${userEvents.length === 0 ? styles.rightSectionCentered : ''}`}
+          className={`${styles.rightSection} ${allEventsForDisplay.length === 0 ? styles.rightSectionCentered : ''}`}
         >
           <h1 className={styles.title}>Sign up for an event</h1>
           <div className={styles.prompt}>Enter the code below:</div>

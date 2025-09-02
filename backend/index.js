@@ -4,6 +4,9 @@ const cors = require('cors');
 const db = require('./db');
 const User = require('./models/users');
 const Event = require('./models/events');
+const Driver = require('./models/drivers');
+const Passenger = require('./models/passengers');
+const Attendee = require('./models/attendees');
 const logger = require('./logger');
 const multer = require('multer');
 const path = require('path');
@@ -103,6 +106,18 @@ app.get('/api/users/:id/events', async (req, res) => {
   }
 });
 
+// Get all events a user has signed up for
+app.get('/api/users/:userId/signed-up-events', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const events = await Event.findSignedUpEventsByUserId(userId);
+    res.json(events);
+  } catch (err) {
+    logger.error(err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 // Create a new event
 app.post('/api/events', async (req, res) => {
   try {
@@ -164,6 +179,53 @@ app.post('/api/upload-image', upload.single('image'), (req, res) => {
     // Return the URL of the uploaded image
     const imageUrl = `/uploads/${req.file.filename}`;
     res.status(200).json({ imageUrl });
+  } catch (err) {
+    logger.error(err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Sign-up as Driver
+app.post('/api/sign-up/driver', async (req, res) => {
+  try {
+    const { userId, eventId, leavingFrom, comingBackTo, capacity } = req.body;
+    const newDriver = await Driver.create({
+      userId,
+      eventId,
+      leavingFrom,
+      comingBackTo,
+      capacity,
+    });
+    res.status(201).json(newDriver);
+  } catch (err) {
+    logger.error(err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Sign-up as Passenger
+app.post('/api/sign-up/passenger', async (req, res) => {
+  try {
+    const { userId, eventId, pickupAt, dropoffAt } = req.body;
+    const newPassenger = await Passenger.create({
+      userId,
+      eventId,
+      pickupAt,
+      dropoffAt,
+    });
+    res.status(201).json(newPassenger);
+  } catch (err) {
+    logger.error(err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Sign-up as Attendee
+app.post('/api/sign-up/attendee', async (req, res) => {
+  try {
+    const { userId, eventId } = req.body;
+    const newAttendee = await Attendee.create({ userId, eventId });
+    res.status(201).json(newAttendee);
   } catch (err) {
     logger.error(err);
     res.status(500).json({ error: 'Internal Server Error' });
