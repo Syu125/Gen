@@ -36,4 +36,16 @@ class Driver {
   // You can add more methods here, e.g., findById, findByEventId, update, delete
 }
 
+Driver.findByEventId = async (eventId) => {
+  const query = `
+    SELECT u.name, d.leaving_from_name as leaving_from, d.coming_back_to_name as coming_back_to, 'Driver' as role
+    FROM drivers d
+    JOIN users u ON d.user_id = u.id
+    WHERE d.event_id = $1
+  `;
+  const values = [eventId];
+  const { rows } = await db.query(query, values);
+  return rows;
+};
+
 module.exports = Driver;

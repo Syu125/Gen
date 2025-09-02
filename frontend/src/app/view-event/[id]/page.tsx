@@ -1,17 +1,18 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import styles from './page.module.css';
 import EventCard from '@/components/event-card/EventCard';
+import { Event } from '@/types';
 
-interface Attendee {
-  id: number;
+interface Participant {
   name: string;
-  pickupLocation: string;
-  pickupTime: string;
-  dropoffLocation: string;
-  dropoffTime: string;
+  role: 'Driver' | 'Passenger' | 'Attendee';
+  leaving_from?: string;
+  coming_back_to?: string;
+  pickup_at?: string;
+  dropoff_at?: string;
 }
 
 export default function ViewEvent() {
@@ -19,62 +20,48 @@ export default function ViewEvent() {
   const params = useParams();
   const eventId = params.id;
 
-  // Mock event data - in real app, this would come from API
-  const event = {
-    id: Number(eventId),
-    code: 'C9NG7H',
-    title: 'Praise & Prayer',
-    subtitle: 'Night',
-    date: 'Feb 19',
-    time: '8:00PM',
-    description: 'A night of praise and prayer.',
-    location: 'Main Hall',
-    creator_id: '1',
-  };
+  const [event, setEvent] = useState<Event | null>(null);
+  const [participants, setParticipants] = useState<Participant[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Mock attendees data
-  const attendees: Attendee[] = [
-    {
-      id: 1,
-      name: 'You',
-      pickupLocation: '-',
-      pickupTime: '-',
-      dropoffLocation: '-',
-      dropoffTime: '-',
-    },
-    {
-      id: 2,
-      name: 'Passenger 1',
-      pickupLocation: 'Costa Verde',
-      pickupTime: '-',
-      dropoffLocation: 'Costa Verde',
-      dropoffTime: '-',
-    },
-    {
-      id: 3,
-      name: 'Passenger 2',
-      pickupLocation: 'Warren College',
-      pickupTime: '-',
-      dropoffLocation: 'Warren College',
-      dropoffTime: '-',
-    },
-    {
-      id: 4,
-      name: 'Passenger 3',
-      pickupLocation: 'Seventh College',
-      pickupTime: '-',
-      dropoffLocation: 'Seventh College',
-      dropoffTime: '-',
-    },
-    {
-      id: 5,
-      name: 'Passenger 4',
-      pickupLocation: 'Seventh College',
-      pickupTime: '-',
-      dropoffLocation: 'Seventh College',
-      dropoffTime: '-',
-    },
-  ];
+  useEffect(() => {
+    const fetchEventData = async () => {
+      if (eventId) {
+        setIsLoading(true);
+        try {
+          // Fetch event details
+          const eventRes = await fetch(
+            `http://localhost:5000/api/events/${eventId}`
+          );
+          if (eventRes.ok) {
+            const eventData = await eventRes.json();
+            setEvent(eventData);
+          } else {
+            console.error('Failed to fetch event data');
+            setEvent(null);
+          }
+
+          // Fetch participants
+          const participantsRes = await fetch(
+            `http://localhost:5000/api/events/${eventId}/participants`
+          );
+          if (participantsRes.ok) {
+            const participantsData = await participantsRes.json();
+            setParticipants(participantsData);
+          } else {
+            console.error('Failed to fetch participants');
+          }
+        } catch (error) {
+          console.error('Error fetching event data:', error);
+          setEvent(null);
+        } finally {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    fetchEventData();
+  }, [eventId]);
 
   const handleBack = () => {
     router.back();
@@ -90,7 +77,25 @@ export default function ViewEvent() {
     console.log('Exporting event data...');
   };
 
-  const passengerCount = attendees.length - 1; // Exclude "You"
+  if (isLoading) {
+    return (
+      <div className={styles.page}>
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
+  if (!event) {
+    return (
+      <div className={styles.page}>
+        <p>Event not found.</p>
+      </div>
+    );
+  }
+
+  const passengerCount = participants.filter(
+    (p) => p.role === 'Passenger'
+  ).length;
 
   return (
     <div className={styles.page}>
@@ -115,24 +120,28 @@ export default function ViewEvent() {
               <thead className={styles.tableHeader}>
                 <tr>
                   <th>Name</th>
-                  <th>Pickup Location</th>
-                  <th>Pickup Time</th>
-                  <th>Dropoff Location</th>
-                  <th>Dropoff Time</th>
+                  <th>Role</th>
+                  <th>Pickup</th>
+                  <th>Dropoff</th>
                 </tr>
               </thead>
               <tbody>
-                {attendees.map((attendee) => (
-                  <tr key={attendee.id} className={styles.tableRow}>
-                    <td className={styles.passengerName}>{attendee.name}</td>
-                    <td className={styles.location}>
-                      {attendee.pickupLocation}
+                {participants.map((participant, index) => (
+                  <tr key={index} className={styles.tableRow}>
+                    <td className={styles.passengerName}>
+                      {participant.name}
                     </td>
-                    <td className={styles.time}>{attendee.pickupTime}</td>
+                    <td>{participant.role}</td>
                     <td className={styles.location}>
-                      {attendee.dropoffLocation}
+                      {participant.role === 'Driver'
+                        ? participant.leaving_from
+                        : participant.pickup_at || '-'}
                     </td>
-                    <td className={styles.time}>{attendee.dropoffTime}</td>
+                    <td className={styles.location}>
+                      {participant.role === 'Driver'
+                        ? participant.coming_back_to
+                        : participant.dropoff_at || '-'}
+                    </td>
                   </tr>
                 ))}
               </tbody>

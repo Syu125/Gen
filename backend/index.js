@@ -170,6 +170,22 @@ app.get('/api/events/code/:code', async (req, res) => {
   }
 });
 
+// Get all participants for an event
+app.get('/api/events/:id/participants', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const drivers = await Driver.findByEventId(id);
+    const passengers = await Passenger.findByEventId(id);
+    const attendees = await Attendee.findByEventId(id);
+
+    const participants = [...drivers, ...passengers, ...attendees];
+    res.json(participants);
+  } catch (err) {
+    logger.error(err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 // Image upload endpoint
 app.post('/api/upload-image', upload.single('image'), (req, res) => {
   try {

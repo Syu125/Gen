@@ -12,4 +12,16 @@ class Attendee {
   // You can add more methods here
 }
 
+Attendee.findByEventId = async (eventId) => {
+  const query = `
+    SELECT u.name, 'Attendee' as role
+    FROM attendees a
+    JOIN users u ON a.user_id = u.id
+    WHERE a.event_id = $1
+  `;
+  const values = [eventId];
+  const { rows } = await db.query(query, values);
+  return rows;
+};
+
 module.exports = Attendee;

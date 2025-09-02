@@ -28,4 +28,16 @@ class Passenger {
   // You can add more methods here
 }
 
+Passenger.findByEventId = async (eventId) => {
+  const query = `
+    SELECT u.name, p.pickup_at_name as pickup_at, p.dropoff_at_name as dropoff_at, 'Passenger' as role
+    FROM passengers p
+    JOIN users u ON p.user_id = u.id
+    WHERE p.event_id = $1
+  `;
+  const values = [eventId];
+  const { rows } = await db.query(query, values);
+  return rows;
+};
+
 module.exports = Passenger;
