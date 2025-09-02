@@ -129,7 +129,11 @@ export default function SignUpForm({ event }: SignUpFormProps) {
       router.push('/dashboard'); // Redirect to dashboard
     } catch (err) {
       console.error('Sign up error:', err);
-      setError(err.message || 'An unexpected error occurred.');
+      setError(
+        typeof err === 'object' && err !== null && 'message' in err
+          ? String((err as { message?: string }).message)
+          : 'An unexpected error occurred.'
+      );
     }
   };
 

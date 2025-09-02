@@ -3,16 +3,16 @@
 import SignUpForm from '@/components/sign-up-form/SignUpForm';
 import React, { useState, useEffect } from 'react';
 import { Event } from '@/types';
+import { useParams } from 'next/navigation';
 
-interface SignUpPageProps {
-  params: {
-    eventCode: string;
-  };
-}
+// interface SignUpPageProps {
+//   params: {
+//     eventCode: string;
+//   };
+// }
 
-export default function SignUpPage({ params }: SignUpPageProps) {
-  // Explicitly cast params to ensure correct type interpretation
-  const { eventCode } = params as { eventCode: string };
+export default function SignUpPage() {
+  const { eventCode } = useParams<{ eventCode: string }>();
   const [event, setEvent] = useState<Event | null>(null);
   const [loading, setLoading] = useState(true);
 
